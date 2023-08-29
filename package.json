@@ -1,0 +1,24 @@
+{
+  "name": "api_instaleap",
+  "version": "1.0.0",
+  "description": "API de integração Montekali X Instaleap ",
+  "main": "API.js",
+  "scripts": {
+    "test": "node api.js"
+  },
+  "author": "Nícolas Pimenta T.I MonteKali",
+  "license": "ISC",
+  "dependencies": {
+    "api": "^6.1.0",
+    "axios": "^1.4.0",
+    "cli-progress": "^3.12.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "graceful-fs": "^4.2.11",
+    "luxon": "^3.4.0",
+    "moment": "^2.29.4",
+    "pg": "^8.11.1",
+    "request": "^2.88.2",
+    "socket.io": "^4.7.2"
+  }
+}

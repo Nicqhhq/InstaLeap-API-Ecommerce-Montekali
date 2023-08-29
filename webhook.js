@@ -42,35 +42,6 @@ class WebHook {
                     break
             }
 
-
-
-
-            // if (req.body['type'] == 'PICKING_FINISHED') {
-            //     res.json({
-            //         'AVISO': 'PICKING_FINISHED ACEITO'
-            //     })
-            //     var objeto = req.body['job']['job_items'];
-            //     var numeropedido = req.body['job']['declared_value'].toString().replace('.', '')
-            //     for (const itens in objeto) {
-            //         if (objeto.hasOwnProperty.call(objeto, itens)) {
-            //             const produtos = objeto[itens];
-            //             itenspedido.push(produtos)
-            //         }
-            //     }
-            //     for (const itens in itenspedido) {
-            //         if (itenspedido.hasOwnProperty.call(itenspedido, itens)) {
-            //             const produtos = itenspedido[itens];
-            //             itensvalor.push({ ean: produtos['attributes']['ean'], valor: produtos['attributes']['posPrice'], quantidade: produtos['found_quantity'], unidade: produtos['unit'] })
-            //         }
-            //     }
-            //     const gerapedido = new gerapedidoclass(numeropedido, itensvalor)
-            //     gerapedido.gravapedido()
-            // }
-            // else {
-            //     res.json({
-            //         'AVISO': `${req.body['type']} Recebido mas nao computado`
-            //     })
-            // }
         })
     }
 }

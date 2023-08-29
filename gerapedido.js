@@ -25,7 +25,7 @@ class Gerapedido {
         for (const itens in listaitem[0]) {
             if (listaitem[0].hasOwnProperty.call(listaitem[0], itens)) {
                 const item = listaitem[0][itens];
-                fs.appendFileSync(`${this.pedido}.txt`, `${item}\n`,)
+                fs.appendFileSync(`${listaitem[1]}.txt`, `${item}\n`,)
             }
         }
         fs.appendFileSync(`${listaitem[1]}.txt`, `CRLF\n`,)

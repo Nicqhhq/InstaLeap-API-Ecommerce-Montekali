@@ -7,19 +7,18 @@ class WebHook {
     constructor() { }
     async iniciaWebHook() {
         app.use(api.json());
-        app.listen(port, () => {
-            console.log(`Rodando na porta:  ${port}`);
-        });
+        app.listen(port, () => { console.log(`Rodando na porta:  ${port}`) });
+
         app.post('/v1/ecommerce/api/instaleap/pedidos', (req, res) => {
             console.log(`Post Recebido de IP:${req.ip}`);
-            const itenspedido = [];
-            const itensvalor = [];
             console.log(req.body['type']);
             switch (req.body['type']) {
                 case 'PICKING_FINISHED':
                     res.json({
                         'AVISO': 'PICKING_FINISHED ACEITO'
                     })
+                    const itenspedido = [];
+                    const itensvalor = [];
                     var objeto = req.body['job']['job_items'];
                     var numeropedido = req.body['job']['declared_value'].toString().replace('.', '')
                     for (const itens in objeto) {
@@ -34,8 +33,8 @@ class WebHook {
                             itensvalor.push({ ean: produtos['attributes']['ean'], valor: produtos['attributes']['posPrice'], quantidade: produtos['found_quantity'], unidade: produtos['unit'] })
                         }
                     }
-                    const gerapedido = new gerapedidoclass(numeropedido, itensvalor)
-                    gerapedido.gravapedido();
+                    const gerapedido = new gerapedidoclass()
+                    gerapedido.gravapedido(numeropedido, itensvalor);
                     break;
                 case 'CREATED':
                     res.json({ 'AVISO': 'CREATED ACEITO' })

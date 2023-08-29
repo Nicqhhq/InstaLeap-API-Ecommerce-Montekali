@@ -1,21 +1,16 @@
 const fs = require('fs')
 class Gerapedido {
-    constructor(pedido, itens, cliente, endereco, pagamento) {
-        this.pedido = pedido;
-        this.itens = itens;
-        this.cliente = cliente;
-        this.endereco = endereco;
-        this.pagamento = pagamento;
+    constructor() {
     }
-    get getitens() {
-        return this.itens
+    getNumeroPedido() {
+
     }
-    getListaitem() {
+    getListaitem(numeropedido, itensvalor) {
         const listaitem = []
-        //Grava Itenss
-        for (const codigos in this.itens) {
-            if (this.itens.hasOwnProperty.call(this.itens, codigos)) {
-                const produtos = this.itens[codigos];
+        //Grava Itens
+        for (const codigos in itensvalor) {
+            if (itensvalor.hasOwnProperty.call(itensvalor, codigos)) {
+                const produtos = itensvalor[codigos];
                 const itemean = produtos['ean'];
                 const itemquantidade = produtos['quantidade'] * 1000
                 const itemvalor = parseInt(produtos['valor'].toString().replace('.', ''))
@@ -23,19 +18,18 @@ class Gerapedido {
                 listaitem.push(`IT^A${itemean}^B${itemquantidade}^C${itemvalorformt}^`)
             }
         }
-        return listaitem;
+        return [listaitem, numeropedido];
     }
-    gravapedido() {
-        var listaitem = this.getListaitem();
-        for (const itens in listaitem) {
-
-            if (listaitem.hasOwnProperty.call(listaitem, itens)) {
-                const item = listaitem[itens];
+    gravapedido(numeropedido, itensvalor) {
+        var listaitem = this.getListaitem(numeropedido, itensvalor);
+        for (const itens in listaitem[0]) {
+            if (listaitem[0].hasOwnProperty.call(listaitem[0], itens)) {
+                const item = listaitem[0][itens];
                 fs.appendFileSync(`${this.pedido}.txt`, `${item}\n`,)
             }
         }
-        fs.appendFileSync(`${this.pedido}.txt`, `CRLF\n`,)
-        console.log(`Pedido Gravado numero: ${this.pedido}`)
+        fs.appendFileSync(`${listaitem[1]}.txt`, `CRLF\n`,)
+        console.log(`Pedido Gravado numero: ${listaitem[1]}`)
     }
 }
 

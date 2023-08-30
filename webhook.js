@@ -14,9 +14,6 @@ class WebHook {
             console.log(req.body['type']);
             switch (req.body['type']) {
                 case 'PICKING_FINISHED':
-                    res.json({
-                        'AVISO': 'PICKING_FINISHED ACEITO'
-                    })
                     const itenspedido = [];
                     const itensvalor = [];
                     var objeto = req.body['job']['job_items'];
@@ -34,7 +31,11 @@ class WebHook {
                         }
                     }
                     const gerapedido = new gerapedidoclass()
-                    gerapedido.gravapedido(numeropedido, itensvalor);
+                    const retorno = gerapedido.gravapedido(numeropedido, itensvalor);
+                    res.json({
+                        'AVISO': 'PICKING_FINISHED ACEITO',
+                        'NUMERO DO PEDIDO': retorno
+                    })
                     break;
                 case 'CREATED':
                     res.json({ 'AVISO': 'CREATED ACEITO' })

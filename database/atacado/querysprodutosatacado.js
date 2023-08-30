@@ -74,7 +74,7 @@ prod_marca as marca
                 and prod_status = 'N'
                 and prod_descricao not like ('%C.P%')
                 and prod_dpto_codigo not in ('122','016','020','021','022','025','123','124','125','129')
-                and prod_dataalt  >= current_date -5	
+                --and prod_dataalt  >= current_date -5	
                     group by 1,2,3,4,5,6,7`
         console.log("unidade query:", this.unidade);
         return select;

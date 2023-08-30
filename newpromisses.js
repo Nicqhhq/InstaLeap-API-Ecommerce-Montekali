@@ -29,10 +29,10 @@ class Promisses {
                 // 'criaProdutoInicial': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
             },
             '100': {
-                'criaProdutoAtacado': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
-                'atualizaProdutoAtacado': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
-                'criaCatalogoAtacado': [{ hour: 22, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
-                'atualizaCatalogoPrecoEstoqueAtacado': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
+                // 'criaProdutoAtacado': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
+                'atualizaProdutoAtacado': [{ hour: 6, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
+                // 'criaCatalogoAtacado': [{ hour: 22, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
+                // 'atualizaCatalogoPrecoEstoqueAtacado': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
                 // 'criaProdutoInicial': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
                 // 'criaCatalogoInicialAtacado': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
             }

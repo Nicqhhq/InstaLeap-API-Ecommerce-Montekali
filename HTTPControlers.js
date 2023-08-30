@@ -88,7 +88,7 @@ class InstaleapAPI {
     }
 
 
-    async atualizaProduto(produtonome, produtosku, produtoembalagem, produtourlfoto, produtoean, produtomarca) {
+    async atualizaProduto(produtonome, produtosku, produtoembalagem, produtourlfoto, produtoean, produtomarca, multiplo) {
         return new Promise((resolve, reject) => {
             const unidade = this.unidade
             const options = {
@@ -106,14 +106,15 @@ class InstaleapAPI {
                     ean: [produtoean],
                     name: produtonome,
                     brand: produtomarca,
-                    unit: produtoembalagem
+                    unit: produtoembalagem,
+                    clickMultiplier: multiplo
                 },
                 json: true
             };
             request(options, (error, response, body) => {
                 if (error) {
                     log.gravaLog(`atualizacao de produto unidade : ${unidade} : Retentativa ${produtonome}-${produtosku} ${error}`)
-                    this.atualizaProduto(produtonome, produtosku, produtoembalagem, produtourlfoto, produtoean, produtomarca).then(resolve(
+                    this.atualizaProduto(produtonome, produtosku, produtoembalagem, produtourlfoto, produtoean, produtomarca, multiplo).then(resolve(
                         `atualizacao de produto unidade : ${unidade} : Retentativa ${produtonome}-${produtosku} Concluida`
                     )).catch(reject())
                 }

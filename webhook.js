@@ -2,12 +2,23 @@ const api = require('express');
 const app = api();
 const gerapedidoclass = require('./gerapedido')
 const port = 3000;
+const instaleap = require('./HTTPControlers');
+
+app.use(api.json());
+app.listen(port, () => { console.log(`Rodando na porta:  ${port}`) });
+app.post('/v1/ecommerce/api/instaleap/pedidos', (req, res) => {
+    teste(req, res)
+})
+
+function teste(req, res) {
+    console.log(req.body)
+}
 
 class WebHook {
     constructor() { }
     async iniciaWebHook() {
-        app.use(api.json());
-        app.listen(port, () => { console.log(`Rodando na porta:  ${port}`) });
+        const gerapedido = new gerapedidoclass()
+        var retorno;
 
         app.post('/v1/ecommerce/api/instaleap/pedidos', (req, res) => {
             console.log(`Post Recebido de IP:${req.ip}`);
@@ -30,16 +41,29 @@ class WebHook {
                             itensvalor.push({ ean: produtos['attributes']['ean'], valor: produtos['attributes']['posPrice'], quantidade: produtos['found_quantity'], unidade: produtos['unit'] })
                         }
                     }
-                    const gerapedido = new gerapedidoclass()
-                    const retorno = gerapedido.gravapedido(numeropedido, itensvalor);
+                    retorno = gerapedido.gravapedido(numeropedido, itensvalor);
                     res.json({
                         'AVISO': 'PICKING_FINISHED ACEITO',
                         'NUMERO DO PEDIDO': retorno
                     })
                     break;
                 case 'CREATED':
-                    res.json({ 'AVISO': 'CREATED ACEITO' })
-                    console.log(req.body);
+                    var api;
+                    var objeto = req.body['job']['origin']['store_reference'];
+                    var idjob = req.body['job']['id'];
+                    switch (objeto) {
+                        case 'MON-002':
+                            api = new instaleap('002');
+                            break;
+                        default:
+                            break;
+                    }
+                    retorno = gerapedido.reservaNumeroPedido();
+                    res.json({
+                        'AVISO': 'CREATED ACEITO',
+                        'NUMERO DO PEDIDO': retorno
+                    });
+                    api.atualizaNumeracaoPedido(idjob, retorno)
                     break
             }
 

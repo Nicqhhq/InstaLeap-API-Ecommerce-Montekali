@@ -1,8 +1,9 @@
 const Sender = require('./sender');
 const { DateTime, Interval } = require("luxon");
+const path = require('path')
 var primeiraabertura = true;
 const now = DateTime.local();
-
+const Server = require(path.join(__dirname, 'src', 'api', 'express.js'));
 class Promisses {
     constructor(unidade, primeiraabertura) {
         this.unidade = unidade;
@@ -29,10 +30,10 @@ class Promisses {
                 // 'criaProdutoInicial': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
             },
             '100': {
-                // 'criaProdutoAtacado': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
-                'atualizaProdutoAtacado': [{ hour: 6, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
-                // 'criaCatalogoAtacado': [{ hour: 22, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
-                // 'atualizaCatalogoPrecoEstoqueAtacado': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
+                'criaProdutoAtacado': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
+                'atualizaProdutoAtacado': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
+                'criaCatalogoAtacado': [{ hour: 22, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
+                'atualizaCatalogoPrecoEstoqueAtacado': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
                 // 'criaProdutoInicial': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
                 // 'criaCatalogoInicialAtacado': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
             }
@@ -85,17 +86,16 @@ class Promisses {
     }
 }
 
-const WebHook = require('./webhook');
 const monteserrat = new Promisses('002');
 const kalimera = new Promisses('007');
 const atacadocerto = new Promisses('100');
-const webhook = new WebHook();
-webhook.iniciaWebHook();
+const server = new Server()
+server.start();
 async function iniciar() {
     if (primeiraabertura == true) {
-        // await monteserrat.inicializacao().then("Finalizada Monte Serrat");
-        // await kalimera.inicializacao().then("Finalizada Kalimera");
-        // await atacadocerto.inicializacao().then("Finalizada Atacado certo");
+        await monteserrat.inicializacao().then("Finalizada Monte Serrat");
+        await kalimera.inicializacao().then("Finalizada Kalimera");
+        await atacadocerto.inicializacao().then("Finalizada Atacado certo");
         primeiraabertura = false;
         iniciar();
     }

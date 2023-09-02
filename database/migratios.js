@@ -1,8 +1,9 @@
-const db = require('./database');
-const Querysprodutosvarejo = require('./database/varejo/querysprodutosvarejo');
-const Queryscatalogosvarejos = require('./database/varejo/queryscatalogosvarejo');
-const Querysprodutosatacado = require('./database/atacado/querysprodutosatacado');
-const Queryscatalogosatacado = require('./database/atacado/queryscatalogosatacado');
+const path = require('path');
+const db = require(path.join(__dirname, 'database.js'));
+const Querysprodutosvarejo = require(path.join(__dirname, 'varejo', 'querysprodutosvarejo.js'));
+const Queryscatalogosvarejos = require(path.join(__dirname, 'varejo', 'queryscatalogosvarejo.js'));
+const Querysprodutosatacado = require(path.join(__dirname, 'atacado', 'querysprodutosatacado.js'));
+const Queryscatalogosatacado = require(path.join(__dirname, 'atacado', 'queryscatalogosatacado.js'));
 db.bdconexao();
 class Migrations {
     constructor(unidade) {

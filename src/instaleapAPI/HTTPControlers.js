@@ -1,7 +1,7 @@
-const api = require('./URL')
+const path = require('path');
+const api = require(path.join(__dirname, 'URL.js'));
+const log = require(path.join(__dirname, '..', 'configlogs', 'gravalog.js'));
 const request = require('request');
-var itensduplicados = 0;
-const log = require('./gravalog');
 var apikeyunidade;
 class InstaleapAPI {
     constructor(unidade) {

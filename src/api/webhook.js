@@ -1,5 +1,5 @@
 const path = require('path');
-const Gerapedido = require(path.join(__dirname, '..', '..', './gerapedido'))
+const Gerapedido = require(path.join(__dirname, '..', 'webhook', './gerapedido'))
 const gerapedido = new Gerapedido
 
 gerapedido.getNumeroPedidoAtual()

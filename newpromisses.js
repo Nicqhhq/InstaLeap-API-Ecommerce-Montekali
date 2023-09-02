@@ -1,6 +1,6 @@
-const Sender = require('./sender');
+const path = require('path');
+const Sender = require(path.join(__dirname, 'src', 'instaleapAPI', 'sender.js'));
 const { DateTime, Interval } = require("luxon");
-const path = require('path')
 var primeiraabertura = true;
 const now = DateTime.local();
 const Server = require(path.join(__dirname, 'src', 'api', 'express.js'));
@@ -93,9 +93,9 @@ const server = new Server()
 server.start();
 async function iniciar() {
     if (primeiraabertura == true) {
-        await monteserrat.inicializacao().then("Finalizada Monte Serrat");
-        await kalimera.inicializacao().then("Finalizada Kalimera");
-        await atacadocerto.inicializacao().then("Finalizada Atacado certo");
+        // await monteserrat.inicializacao().then("Finalizada Monte Serrat");
+        // await kalimera.inicializacao().then("Finalizada Kalimera");
+        // await atacadocerto.inicializacao().then("Finalizada Atacado certo");
         primeiraabertura = false;
         iniciar();
     }

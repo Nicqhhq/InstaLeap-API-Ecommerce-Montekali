@@ -1,8 +1,9 @@
+const path = require('path');
 const api = require('express');
 const app = api();
-const gerapedidoclass = require('./gerapedido')
+const gerapedidoclass = require(path.join(__dirname, 'gerapedido.js'));
 const port = 3000;
-const instaleap = require('./HTTPControlers');
+const instaleap = require(path.join(__dirname, '..', 'instaleapAPI', 'HTTPControlers.js'));
 
 app.use(api.json());
 app.listen(port, () => { console.log(`Rodando na porta:  ${port}`) });

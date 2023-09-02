@@ -1,7 +1,6 @@
-const instaleapAPI = require('./HTTPControlers');
-const migrations = require('./migratios');
-const time = require('./time');
-const tempo = new time;
+const path = require('path')
+const instaleapAPI = require(path.join(__dirname, 'HTTPControlers.js'));
+const migrations = require(path.join(__dirname, '..', '..', 'database', 'migratios.js'))
 class Sender {
     constructor(unidade) {
         this.unidade = unidade

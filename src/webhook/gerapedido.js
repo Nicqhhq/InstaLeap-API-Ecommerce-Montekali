@@ -1,8 +1,10 @@
 const fs = require('fs')
 const path = require('path');
-const arquivonumeropedido = path.join(__dirname, 'numeropedido.txt');
-const arquivopedido = path.join(__dirname, 'pedidos', '/');
-const Instaleap = require('./HTTPControlers')
+const arquivonumeropedido = path.join(__dirname, '..', '..', 'pedidos', 'numeropedido', 'numeropedido.txt');
+const arquivopedido = path.join(__dirname, '..', '..', 'pedidos/');
+const Instaleap = require(path.join(__dirname, '..', 'instaleapAPI', 'HTTPControlers.js'));
+const localdatabase = require(path.join(__dirname, '..', '..', 'database', 'localdatabase', 'controllerdatabase', 'initdatabase.js'));
+const db = new localdatabase()
 const instaleap = new Instaleap()
 console.log()
 class Gerapedido {
@@ -25,10 +27,12 @@ class Gerapedido {
         }
     }
     reservaNumeroPedido(jobId) {
-        console.log(jobId, 'reserva numero pedido')
+        db.gravaPedido('2023/08/01', 'MON-002', jobId);
+        console.log(db.retornaultimopedido())
+        console.log(jobId, 'reserva numero pedido');
         const ultimopedido = this.getNumeroPedidoAtual();
         const numeroPedidoAtualizado = parseInt(ultimopedido) + 1;
-        fs.writeFileSync(`${path.join(__dirname, 'pedidos', `${numeroPedidoAtualizado}.txt`)}`, '');
+        fs.writeFileSync(`${arquivopedido}${numeroPedidoAtualizado}.txt`, '');
         instaleap.atualizaNumeracaoPedido(jobId, numeroPedidoAtualizado);
         this.AtualizaNumeroPedido();
         return numeroPedidoAtualizado;

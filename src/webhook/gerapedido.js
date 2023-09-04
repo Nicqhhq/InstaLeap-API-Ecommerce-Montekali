@@ -1,50 +1,27 @@
 const fs = require('fs')
 const path = require('path');
-const arquivonumeropedido = path.join(__dirname, '..', '..', 'pedidos', 'numeropedido', 'numeropedido.txt');
 const arquivopedido = path.join(__dirname, '..', '..', 'pedidos/');
 const Instaleap = require(path.join(__dirname, '..', 'instaleapAPI', 'HTTPControlers.js'));
 const localdatabase = require(path.join(__dirname, '..', '..', 'database', 'localdatabase', 'controllerdatabase', 'initdatabase.js'));
+const Timer = require(path.join(__dirname, '..', 'configlogs', 'time.js'));
+const timer = new Timer();
+const data = timer.get_data_atual();
 const db = new localdatabase()
 const instaleap = new Instaleap()
 console.log()
 class Gerapedido {
     constructor() {
     }
-    getNumeroPedidoAtual() {
-        try {
-            const data = fs.readFileSync(arquivonumeropedido, 'utf8');
-            return data
-        } catch (error) {
-            if (error.code == 'ENOENT') {
-                console.log("nao ha arquivo de pedido \n iniciando geracao de um novo");
-                try {
-                    fs.writeFileSync(arquivonumeropedido, '0',);
-                    return "0"
-                } catch (error) {
-                    console.log("Erro ao criar o txt na pasta `")
-                }
-            }
-        }
+    async getNumeroPedidoAtual() {
+        const dadosUltimoPedido = await db.retornaUltimoPedido()
+        return dadosUltimoPedido['pedido_num'] + 1;
     }
-    reservaNumeroPedido(jobId) {
-        db.gravaPedido('2023/08/01', 'MON-002', jobId);
-        console.log(db.retornaultimopedido())
+    async reservaNumeroPedido(jobId) {
         console.log(jobId, 'reserva numero pedido');
-        const ultimopedido = this.getNumeroPedidoAtual();
-        const numeroPedidoAtualizado = parseInt(ultimopedido) + 1;
-        fs.writeFileSync(`${arquivopedido}${numeroPedidoAtualizado}.txt`, '');
-        instaleap.atualizaNumeracaoPedido(jobId, numeroPedidoAtualizado);
-        this.AtualizaNumeroPedido();
-        return numeroPedidoAtualizado;
-    }
-    AtualizaNumeroPedido() {
-        const pedidoatual = this.getNumeroPedidoAtual()
-        const pedidoatualizado = parseInt(pedidoatual) + 1
-        try {
-            fs.writeFileSync(arquivonumeropedido, `${pedidoatualizado}`)
-        } catch (error) {
-            console.log("Erro ao atualizar sequencial pedido");
-        }
+        const ultimopedido = await this.getNumeroPedidoAtual()
+        db.gravaPedido(data, 'MON-002', jobId);
+        instaleap.atualizaNumeracaoPedido(jobId, ultimopedido);
+        return ultimopedido;
     }
     getListaitem(numeropedido, itensvalor) {
         const listaitem = []
@@ -70,12 +47,10 @@ class Gerapedido {
             }
         }
         fs.appendFileSync(`${arquivopedido}${numeropedido}.txt`, `CRLF\n`,),
-            this.AtualizaNumeroPedido();
-        console.log(`Pedido Gravado numero: ${numeropedido}`)
+            console.log(`Pedido Gravado numero: ${numeropedido}`)
         return numeropedido;
     }
 }
 
 module.exports = Gerapedido;
-
 

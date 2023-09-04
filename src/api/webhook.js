@@ -19,10 +19,9 @@ class WebHook {
                 break;
         }
     }
-    onCreated(req, res) {
+    async onCreated(req, res) {
         const object = req.body
-        var numeropedido
-        numeropedido = gerapedido.reservaNumeroPedido(object['job']['id']);
+        var numeropedido = await gerapedido.reservaNumeroPedido(object['job']['id']);
         console.log(object['job']['id'], 'Status pedido');
         res.json({
             'AVISO': 'CREATED ACEITO',

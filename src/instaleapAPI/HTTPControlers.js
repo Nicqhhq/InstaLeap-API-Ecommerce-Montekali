@@ -343,16 +343,16 @@ class InstaleapAPI {
             };
             request(options, (error, response, body) => {
                 if (error) {
-                    log.gravaLog(`Enviado Numero do pedido para instaleap : ${unidade} Pedido ${numeropedido} `)
+                    log.gravaLog(`Enviado Numero do pedido para instaleap : ${id} Pedido ${numeropedido} `)
                 }
                 else {
                     switch (response.statusCode) {
                         case 200:
-                            log.gravaLog(`Enviado Numero do pedido para instaleap : ${unidade} Pedido ${numeropedido}`)
+                            log.gravaLog(`Enviado Numero do pedido para instaleap : ${id} Pedido ${numeropedido}`)
                             resolve()
                             break;
                         case 403:
-                            log.gravaLog(`Erro ao Enviar Numero do pedido para instaleap : ${unidade} Pedido ${numeropedido}`)
+                            log.gravaLog(`Erro ao Enviar Numero do pedido para instaleap : ${id} Pedido ${numeropedido}`)
                             resolve()
                             break;
                         default:

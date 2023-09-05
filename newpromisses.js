@@ -52,7 +52,6 @@ class Promisses {
                         horarioinicio.setHours(tempos[0].hour, tempos[0].minute, tempos[0].second, tempos[0].millisecond);
                         const horariofim = new Date();
                         horariofim.setHours(tempos[1].hour, tempos[1].minute, tempos[1].second, tempos[1].millisecond);
-
                         if (horarioinicio <= now && now <= horariofim) {
                             funcoesParaExecutar.push(funcao);
                         } else {
@@ -60,7 +59,6 @@ class Promisses {
                         }
                     }
                 }
-
                 if (funcoesParaExecutar.length > 0) {
                     console.log(`Dentro do tempo ${funcoesParaExecutar.join(', ')}`);
 
@@ -79,8 +77,13 @@ class Promisses {
                         reject();
                     });
                 }
+                else {
+                    console.log('Nenhuma funcao para rodar')
+                    resolve();
+                }
             } else {
                 console.log(`Código Raiz '${this.unidade}' não encontrado.`);
+                reject(`Código Raiz '${this.unidade}' não encontrado.`);
             }
         })
     }

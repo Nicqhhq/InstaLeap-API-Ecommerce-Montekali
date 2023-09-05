@@ -3,12 +3,12 @@ const router = express.Router();
 const WebHook = require('./webhook');
 const webhook = new WebHook
 
-router.get('/v1/ecommerce/api/instaleap/pedidos', (req, res) => {
+router.post('/v1/ecommerce/api/instaleap/pedidos', (req, res) => {
     webhook.statusPedido(req, res);
 })
 
-router.get('/v1/ecommerce/api/instaleap/teste', (req, res) => {
-    webhook.teste(req, res);
+router.get('/v1/ecommerce/api/ecommerce/margem', (req, res) => {
+    webhook.getMargem(req, res);
 })
 
 

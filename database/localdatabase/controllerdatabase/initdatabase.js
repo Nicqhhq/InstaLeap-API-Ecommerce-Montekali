@@ -7,6 +7,7 @@ class LocalDatabase {
                 console.error(err.message);
             }
             console.log('Conectado a Base de dados local');
+            this.iniciaTabelas()
         })
     }
     iniciaTabelas() {
@@ -14,9 +15,19 @@ class LocalDatabase {
             this.db.run(`
             CREATE TABLE IF NOT EXISTS pedidos(
                     pedido_num INTEGER PRIMARY KEY,
-                    pedido_data text,
-                    pedido_unidade_ecommerce text,
-                    pedido_id_ecommerce text
+                    pedido_data TEXT,
+                    pedido_unidade_ecommerce TEXT,
+                    pedido_id_ecommerce TEXT
+                    )`
+            )
+            this.db.run(`
+            CREATE TABLE IF NOT EXISTS margem_produtos(
+                    margem_nome TEXT,
+                    margem_multiplo numeric,
+                    margem_porcentagem numeric,
+                    margem_sazonal numeric,
+                    margem_sazonal_data_inicio TEXT,
+                    margem_sazonal_data_fim TEXT
                     )`
             )
         }
@@ -55,6 +66,21 @@ class LocalDatabase {
             )
         })
     }
+    getMargemLocalDB() {
+        return new Promise((resolve, reject) => {
+            this.db.all(`
+            SELECT * FROM margem_produtos`,
+                function (err, rows) {
+                    if (err) {
+                        reject(err.message)
+                    }
+                    else {
+                        resolve(rows)
+                    }
+                }
+            )
+        })
+    }
 }
 
 module.exports = LocalDatabase;
@@ -64,7 +90,7 @@ module.exports = LocalDatabase;
 // // const teste1 = teste.retornaUltimoPedido().then(teste => console.log(teste)).catch(err => console.log(err))
 
 // async function teste3() {
-//     const teste1 = await teste.retornaUltimoPedido()
+//     const teste1 = await teste.getMargemLocalDB()
 //     console.log(teste1);
 
 // }

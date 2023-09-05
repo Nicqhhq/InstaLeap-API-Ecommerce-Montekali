@@ -1,5 +1,7 @@
 const path = require('path');
 const Gerapedido = require(path.join(__dirname, '..', 'webhook', './gerapedido'))
+const localdatabase = require(path.join(__dirname, '..', '..', 'database', 'localdatabase', 'controllerdatabase', 'initdatabase.js'));
+const db = new localdatabase()
 const gerapedido = new Gerapedido
 
 gerapedido.getNumeroPedidoAtual()
@@ -19,6 +21,24 @@ class WebHook {
                 break;
         }
     }
+    async getMargem(req, res) {
+        const margens = await db.getMargemLocalDB()
+        const resultado = {};
+        margens.forEach(item => {
+            const nome = item.margem_nome;
+            const multiplo = item.margem_multiplo;
+            const porcentagem = item.margem_porcentagem;
+            const sazonal = item.margem_sazonal
+
+            if (!resultado[nome]) {
+                resultado[nome] = [];
+            }
+
+            resultado[nome].push({ 'multiplo': multiplo.toString(), 'porcentagem': porcentagem, 'sazonal': sazonal, });
+        });
+        res.json(resultado)
+    }
+
     async onCreated(req, res) {
         const object = req.body
         var numeropedido = await gerapedido.reservaNumeroPedido(object['job']['id']);
@@ -54,3 +74,10 @@ class WebHook {
 }
 
 module.exports = WebHook;
+
+// const teste = new WebHook()
+// async function name(params) {
+//     const data = await teste.getMargem()
+//     console.log(data)
+// }
+// name()

@@ -25,6 +25,7 @@ class LocalDatabase {
                     margem_nome TEXT,
                     margem_multiplo numeric,
                     margem_porcentagem numeric,
+                    margem_ativa numeric,
                     margem_sazonal numeric,
                     margem_sazonal_data_inicio TEXT,
                     margem_sazonal_data_fim TEXT
@@ -76,6 +77,22 @@ class LocalDatabase {
                     }
                     else {
                         resolve(rows)
+                    }
+                }
+            )
+        })
+    }
+    setMargemLocalDB(select) {
+        return new Promise((resolve, reject) => {
+            this.db.run(select,
+                function (err) {
+                    if (err) {
+                        reject(`${err.message} ${select}`);
+                        console.error(err.message);
+                    }
+                    else {
+                        resolve(this.changes)
+                        // console.log(`Registros atualizados: ${this.changes}`);
                     }
                 }
             )

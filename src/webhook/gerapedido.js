@@ -25,7 +25,6 @@ class Gerapedido {
     }
     getListaitem(numeropedido, itensvalor) {
         const listaitem = []
-        //Grava Itens
         for (const codigos in itensvalor) {
             if (itensvalor.hasOwnProperty.call(itensvalor, codigos)) {
                 const produtos = itensvalor[codigos];

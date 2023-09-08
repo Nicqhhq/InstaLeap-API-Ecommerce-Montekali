@@ -9,9 +9,9 @@ class Promisses {
         this.unidade = unidade;
         this.primeiraabertura = primeiraabertura;
         this.arraypromisse = [];
+        this.sender = new Sender(this.unidade)
     }
     async inicializacao() {
-        const sender = new Sender(this.unidade);
         const controladortempo = {
             '002': {
                 'criaProduto': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
@@ -65,7 +65,7 @@ class Promisses {
                     // Função para executar as promessas sequencialmente
                     const executePromisesSequentially = async () => {
                         for (const funcaoExecutar of funcoesParaExecutar) {
-                            await sender[funcaoExecutar](); // Aguardar a conclusão da função antes de prosseguir
+                            await this.sender[funcaoExecutar](); // Aguardar a conclusão da função antes de prosseguir
                         }
                     };
 
@@ -96,9 +96,9 @@ const server = new Server()
 server.start();
 async function iniciar() {
     if (primeiraabertura == true) {
-        // await monteserrat.inicializacao().then("Finalizada Monte Serrat");
-        // await kalimera.inicializacao().then("Finalizada Kalimera");
-        // await atacadocerto.inicializacao().then("Finalizada Atacado certo");
+        await monteserrat.inicializacao().then("Finalizada Monte Serrat");
+        await kalimera.inicializacao().then("Finalizada Kalimera");
+        await atacadocerto.inicializacao().then("Finalizada Atacado certo");
         primeiraabertura = false;
         iniciar();
     }

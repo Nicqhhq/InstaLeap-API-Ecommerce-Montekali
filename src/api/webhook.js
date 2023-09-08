@@ -1,4 +1,6 @@
+var request = require('request');
 const path = require('path');
+const { json } = require('express');
 const Gerapedido = require(path.join(__dirname, '..', 'webhook', './gerapedido'))
 const localdatabase = require(path.join(__dirname, '..', '..', 'database', 'localdatabase', 'controllerdatabase', 'initdatabase.js'));
 const db = new localdatabase()
@@ -95,6 +97,35 @@ class WebHook {
             'AVISO': 'PICKING_FINISHED ACEITO',
             'NUMERO DO PEDIDO': retorno
         })
+    }
+    getClientes(req, res) {
+        var cnpj_cpf = req.query.cnpj_cpf;
+        var options = {
+            'method': 'GET',
+            'url': `http://10.100.11.54:9000/v1.5/clientes/cnpj_cpf/${cnpj_cpf}`,
+            'headers': {
+                'token': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAwNzYiLCJpc3MiOiJOaWNvbGFzIFBpbWVudGEgRGEgU2lsdmEiLCJqdGkiOiIzYTZmYTZkNy0yYzY0LTQ1NTUtYmY1ZS0xYmFmZDYzMmYyYzciLCJpYXQiOjE2OTQxMzU2NjYsImV4cCI6MTY5NDE0NjQ2Nn0.2JOInTbxx4_cuDVG_e7rOnjgto_ZaBC31BbRcqSU5nI',
+                'Accept': 'application/json'
+            }
+        };
+        return new Promise((resolve, reject) => {
+            request(options, function (error, response) {
+                if (error) throw new Error(error);
+                const dados = JSON.parse(response.body)
+                if (dados['response']['status'] == 'ok') {
+                    res.json({ dados: dados });
+                    resolve(`${dados['response']['cliente']['codigo']}`)
+                    console.log(dados['response']['cliente']['codigo'])
+                }
+                else if (dados['response']['status'] == 'error') {
+                    res.json({ dados: "Erro" });
+                    this.cadastrarClienteERP
+                }
+            });
+        })
+    }
+    cadastrarClienteERP() {
+        console.log("Cadastrar novo cliente")
     }
 }
 

@@ -3,7 +3,6 @@ const path = require('path');
 const Gerapedido = require(path.join(__dirname, '..', 'webhook', './gerapedido'));
 const localdatabase = require(path.join(__dirname, '..', '..', 'database', 'localdatabase', 'controllerdatabase', 'initdatabase.js'));
 const ApiRP = require(path.join(__dirname, '..', 'rpinfoAPI', 'HTTPControlers.js'));
-const db = new localdatabase();
 const gerapedido = new Gerapedido;
 const apiRP = new ApiRP();
 class WebHook {
@@ -11,7 +10,11 @@ class WebHook {
         const object = req.body
         switch (object['type']) {
             case 'CREATED':
-                this.onCreatedAtacado(req, res);
+                if (object['clientId'] == 'GRUPO_MONTEKALI') {
+                    this.onCreatedAtacado(req, res);
+                } else {
+                    this.onCreatedVarejo(req, res);
+                }
                 break
             case 'PICKING_FINISHED':
                 this.onPickingFinished(req, res);
@@ -20,19 +23,14 @@ class WebHook {
                 break;
         }
     }
-    async onCreatedAtacado(req, res) {
+    async onCreatedVarejo(req, res) {
         const object = req.body
         var numeropedido = await gerapedido.reservaNumeroPedido(object['job']['id']);
-        const itenspedido = [];
-        const itensvalor = [];
-        var responsebody = req.body
-        var objeto = responsebody['job']['job_items'];
-        for (const itens in objeto) {
-            if (objeto.hasOwnProperty.call(objeto, itens)) {
-                const produtos = objeto[itens];
-                itenspedido.push(produtos)
-            }
-        }
+        console.log(object['job']['id'], 'Status pedido');
+        res.json({
+            'AVISO': 'CREATED ACEITO',
+            'NUMERO DO PEDIDO': numeropedido,
+        })
     }
     async onCreatedAtacado(req, res) {
         const object = req.body

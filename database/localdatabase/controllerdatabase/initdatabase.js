@@ -47,7 +47,7 @@ class LocalDatabase {
                 if (err) {
                     return console.error(err.message);
                 }
-                console.log(`Pedido inserido com o id ${this.id}`)
+                console.log(`Pedido inserido com o id ${idecommerce}`)
             });
     }
     retornaUltimoPedido() {

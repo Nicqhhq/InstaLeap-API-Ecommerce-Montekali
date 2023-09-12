@@ -96,9 +96,9 @@ const server = new Server()
 server.start();
 async function iniciar() {
     if (primeiraabertura == true) {
-        await monteserrat.inicializacao().then("Finalizada Monte Serrat");
-        await kalimera.inicializacao().then("Finalizada Kalimera");
-        await atacadocerto.inicializacao().then("Finalizada Atacado certo");
+        // await monteserrat.inicializacao().then("Finalizada Monte Serrat");
+        // await kalimera.inicializacao().then("Finalizada Kalimera");
+        // await atacadocerto.inicializacao().then("Finalizada Atacado certo");
         primeiraabertura = false;
         iniciar();
     }

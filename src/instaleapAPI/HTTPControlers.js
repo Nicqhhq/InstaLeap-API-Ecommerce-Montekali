@@ -369,6 +369,54 @@ class InstaleapAPI {
         })
     }
 
+    criaPromocaoProgressiva(sku,) {
+        const unidade = this.unidade;
+        return new Promise((resolve, reject) => {
+            const options = {
+                method: 'PUT',
+                url: 'https://api.xandar.instaleap.io' + `/jobs/${id}/external_data`,
+                headers: {
+                    accept: 'application/json',
+                    'content-type': 'application/json',
+                    'x-api-key': 'vyRAE82ZWYejUcoJgrEQgNiD1USpFBkp1kt2bcpj',
+                },
+                body: {
+                    external_data: {
+                        webhook: { CODIGOPDV: numeropedido.toString() },
+                        backoffice: { CODIGOPDV: numeropedido.toString() },
+                        shopper_app: { CODIGOPDV: numeropedido.toString() }
+                    }
+                },
+                json: true
+            };
+            request(options, (error, response, body) => {
+                if (error) {
+                    log.gravaLog(`Enviado Numero do pedido para instaleap : ${id} Pedido ${numeropedido} `)
+                }
+                else {
+                    switch (response.statusCode) {
+                        case 200:
+                            log.gravaLog(`Enviado Numero do pedido para instaleap : ${id} Pedido ${numeropedido}`)
+                            resolve()
+                            break;
+                        case 403:
+                            log.gravaLog(`Erro ao Enviar Numero do pedido para instaleap : ${id} Pedido ${numeropedido}`)
+                            resolve()
+                            break;
+                        default:
+                            console.log(response.statusCode);
+                            console.log(options['url']);
+                            console.log(response.body)
+                            log.gravaLog(`Erro desconhecido ao tentar enviar numero do pedido para instaleap numero do pedido: ${numeropedido}`)
+                            resolve()
+                            break;
+                    }
+                }
+            }
+            )
+        })
+    }
+
 }
 module.exports = InstaleapAPI;
 

@@ -1,9 +1,12 @@
 const path = require('path');
 const db = require(path.join(__dirname, 'database.js'));
+const LocalDatabase = require(path.join(__dirname, 'localdatabase', 'controllerdatabase', 'initdatabase.js'));
 const Querysprodutosvarejo = require(path.join(__dirname, 'varejo', 'querysprodutosvarejo.js'));
 const Queryscatalogosvarejos = require(path.join(__dirname, 'varejo', 'queryscatalogosvarejo.js'));
 const Querysprodutosatacado = require(path.join(__dirname, 'atacado', 'querysprodutosatacado.js'));
 const Queryscatalogosatacado = require(path.join(__dirname, 'atacado', 'queryscatalogosatacado.js'));
+const Queryspromocoesatacado = require(path.join(__dirname, 'atacado', 'queryspromocoesatacado.js'));
+const localdatabase = new LocalDatabase()
 db.bdconexao();
 class Migrations {
     constructor(unidade) {
@@ -12,6 +15,43 @@ class Migrations {
     get get_dadosCriaProdutoInicial() {
         return this.dadosCriaProdutoInicial
     }
+    async getMargem() {
+        return new Promise(async (resolve, reject) => {
+            const margem = await localdatabase.getMargemLocalDB().then((_) => { resolve(_) }).catch((_) => { reject(_) })
+        })
+    }
+    async getMargemAtiva() {
+        return new Promise(async (resolve, reject) => {
+            const margem = await localdatabase.getMargemAtivaLocalDB().then((_) => { resolve(_) }).catch((_) => { reject(_) })
+        })
+    }
+    async setMargem(select) {
+        return new Promise(async (resolve, reject) => {
+            const margem = await localdatabase.setMargemLocalDB(select).then((_) => { resolve(_) }).catch((_) => { reject(_) })
+        })
+    }
+    // TESTE TESTE TESTE TESTE TESTE TESTE TESTE TESTE TESTE TESTE
+    async dadosCriaPromocaoProgressiva(classe, data_inicio, data_fim, valida_status, multiplo_emb, percent_desconto) {
+        console.log("unidade da migrations: ", this.unidade)
+        var select;
+        const queryunidade = new Queryspromocoesatacado(this.unidade);
+        switch (classe) {
+            case 'A':
+                select = queryunidade.get_promocoes_progressiva_classe_A(data_inicio, data_fim, valida_status, multiplo_emb, percent_desconto);
+                break;
+            case 'B':
+                select = queryunidade.get_promocoes_progressiva_classe_B(data_inicio, data_fim, valida_status, multiplo_emb, percent_desconto);
+                break;
+            case 'C':
+                select = queryunidade.get_promocoes_progressiva_classe_C(data_inicio, data_fim, valida_status, multiplo_emb, percent_desconto);
+                break
+        }
+        var dados = await db.pool.query(
+            select
+        )
+        return [dados.rows, dados.rowCount];
+    }
+
 
     async dadosCriaProdutoInicial() {
         console.log("unidade da migrations: ", this.unidade)

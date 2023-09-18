@@ -21,13 +21,13 @@ class Promisses {
                 'atualizaCatalogoEstoquePreco': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
             },
             '007': {
-                'criaProduto': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
-                'atualizaProduto': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
-                'criaCatalogo': [{ hour: 22, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
-                'atualizaCatalogo': [{ hour: 23, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 59, second: 59, millisecond: 0 }],
-                'atualizaCatalogoEstoquePreco': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
-                // 'criaCatalogoInicial': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
-                // 'criaProdutoInicial': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
+                // 'criaProduto': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
+                // 'atualizaProduto': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
+                // 'criaCatalogo': [{ hour: 22, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
+                // 'atualizaCatalogo': [{ hour: 23, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 59, second: 59, millisecond: 0 }],
+                // 'atualizaCatalogoEstoquePreco': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
+                'criaProdutoInicial': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
+                'criaCatalogoInicial': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
             },
             '100': {
                 'criaProdutoAtacado': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
@@ -97,7 +97,7 @@ server.start();
 async function iniciar() {
     if (primeiraabertura == true) {
         // await monteserrat.inicializacao().then("Finalizada Monte Serrat");
-        // await kalimera.inicializacao().then("Finalizada Kalimera");
+        await kalimera.inicializacao().then("Finalizada Kalimera");
         // await atacadocerto.inicializacao().then("Finalizada Atacado certo");
         primeiraabertura = false;
         iniciar();

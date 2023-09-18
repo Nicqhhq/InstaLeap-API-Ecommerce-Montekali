@@ -1,6 +1,6 @@
 const path = require('path')
 const instaleapAPI = require(path.join(__dirname, 'HTTPControlers.js'));
-const migrations = require(path.join(__dirname, '..', '..', 'database', 'migratios.js'))
+const migrations = require(path.join(__dirname, '..', '..', 'database', 'migrations.js'))
 class Sender {
     constructor(unidade) {
         this.unidade = unidade
@@ -367,6 +367,40 @@ class Sender {
     }
 
     async atualizaCatalogoPrecoEstoqueAtacado() {
+        var delay = 0;
+        const dados = new migrations(this.unidade);
+        const instaleap = new instaleapAPI(this.unidade);
+        const rows = await dados.get_dadosAtualizaCatalogoPrecoEstoqueAtacado();
+        const promises = [];
+        for (const produto in rows) {
+            if (rows.hasOwnProperty.call(rows, produto)) {
+                const itens = rows[produto];
+                const promise = new Promise((resolve) => {
+                    setTimeout(async () => {
+                        await instaleap.atualizaCatalogo(
+                            itens['sku'],
+                            itens['preco_regular'],
+                            parseInt(itens['estoque']),
+                            itens['cod_store'],
+                            itens['categoria'],
+                            itens['subcat'],
+                            itens['naocontrolaestoque'],
+                            itens['status'],
+                            itens['qtd_min'],
+                            itens['setor']
+                        )
+                        resolve();
+                    }, delay);
+
+                }
+                )
+                promises.push(promise);
+                delay += 50;
+            }
+        }
+        await Promise.all(promises);
+    }
+    async CriaPromocaoProgressivaAtacado() {
         var delay = 0;
         const dados = new migrations(this.unidade);
         const instaleap = new instaleapAPI(this.unidade);

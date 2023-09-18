@@ -82,6 +82,21 @@ class LocalDatabase {
             )
         })
     }
+    getMargemAtivaLocalDB() {
+        return new Promise((resolve, reject) => {
+            this.db.all(`
+            SELECT * FROM margem_produtos WHERE  margem_ativa = 1`,
+                function (err, rows) {
+                    if (err) {
+                        reject(err.message)
+                    }
+                    else {
+                        resolve(rows)
+                    }
+                }
+            )
+        })
+    }
     setMargemLocalDB(select) {
         return new Promise((resolve, reject) => {
             this.db.run(select,

@@ -97,19 +97,19 @@ const server = new Server()
 server.start();
 async function iniciar() {
     if (primeiraabertura == true) {
-        // await monteserrat.inicializacao().then("Finalizada Monte Serrat");
-        await kalimera.inicializacao().then("Finalizada Kalimera");
-        // await atacadocerto.inicializacao().then("Finalizada Atacado certo");
+        await monteserrat.inicializacao().then(() => console.log("Finalizada Monte Serrat"));
+        await kalimera.inicializacao().then(() => console.log("Finalizada Kalimera"));
+        await atacadocerto.inicializacao().then(() => console.log("Finalizada Atacado certo"));
         primeiraabertura = false;
         iniciar();
     }
     else {
         setInterval(async () => {
-            await monteserrat.inicializacao().then("Finalizada Monte Serrat");
-            await kalimera.inicializacao().then("Finalizada Kalimera");
+            await monteserrat.inicializacao().then(() => console.log("Finalizada Monte Serrat"));
+            await kalimera.inicializacao().then(() => console.log("Finalizada Kalimera"));
         }, 1800000);
         setInterval(async () => {
-            await atacadocerto.inicializacao().then("Finalizada Atacado certo");
+            await atacadocerto.inicializacao().then(() => console.log("Finalizada Atacado certo"));
         }, 3600000);
         primeiraabertura = false;
     }

@@ -28,7 +28,8 @@ class LocalDatabase {
                     margem_ativa numeric,
                     margem_sazonal numeric,
                     margem_sazonal_data_inicio TEXT,
-                    margem_sazonal_data_fim TEXT
+                    margem_sazonal_data_fim TEXT,
+                    margem_criada numeric
                     )`
             )
         }
@@ -116,14 +117,3 @@ class LocalDatabase {
 }
 
 module.exports = LocalDatabase;
-
-// const teste = new LocalDatabase();
-
-// // const teste1 = teste.retornaUltimoPedido().then(teste => console.log(teste)).catch(err => console.log(err))
-
-// async function teste3() {
-//     const teste1 = await teste.getMargemLocalDB()
-//     console.log(teste1);
-
-// }
-// teste3()

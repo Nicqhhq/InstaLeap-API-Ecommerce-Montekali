@@ -4,6 +4,7 @@ const { DateTime, Interval } = require("luxon");
 var primeiraabertura = true;
 const now = DateTime.local();
 const Server = require(path.join(__dirname, 'src', 'api', 'express.js'));
+var process = require('process')
 class Promisses {
     constructor(unidade, primeiraabertura) {
         this.unidade = unidade;
@@ -21,12 +22,12 @@ class Promisses {
                 'atualizaCatalogoEstoquePreco': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
             },
             '007': {
-                // 'criaProduto': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
-                // 'atualizaProduto': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
-                // 'criaCatalogo': [{ hour: 22, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
-                // 'atualizaCatalogo': [{ hour: 23, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 59, second: 59, millisecond: 0 }],
-                // 'atualizaCatalogoEstoquePreco': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
-                'criaProdutoInicial': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
+                'criaProduto': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
+                'atualizaProduto': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
+                'criaCatalogo': [{ hour: 22, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
+                'atualizaCatalogo': [{ hour: 23, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 59, second: 59, millisecond: 0 }],
+                'atualizaCatalogoEstoquePreco': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
+                // 'criaProdutoInicial': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
                 // 'criaCatalogoInicial': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
             },
             '100': {
@@ -88,7 +89,14 @@ class Promisses {
         })
     }
 }
-
+setInterval(() => {
+    var memoria = process.memoryUsage()
+    console.log('Uso de memoria MB', {
+        rss: memoria.rss / 1024 / 1024,
+        heapTotal: memoria.heapTotal / 1024 / 1024,
+        heapUseds: memoria.heapUsed / 1024 / 1024,
+    })
+}, 1000)
 
 const monteserrat = new Promisses('002');
 const kalimera = new Promisses('007');

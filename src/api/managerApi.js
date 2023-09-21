@@ -13,6 +13,7 @@ class ManagerApi {
             const margemativa = item.margem_ativa
             const datainicio = item.margem_sazonal_data_inicio;
             const datafim = item.margem_sazonal_data_fim;
+            const criada = item.margem_criada
             if (!resultado[nome]) {
                 resultado[nome] = [];
             }
@@ -23,6 +24,7 @@ class ManagerApi {
                 'margemativa': margemativa,
                 'datainicio': datainicio,
                 'datafim': datafim,
+                'margem_criada': criada,
             });
         });
         res.json(resultado)

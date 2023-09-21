@@ -9,10 +9,9 @@ class InstaleapAPI {
         switch (unidade) {
             case '002':
                 apikeyunidade = api.apikeyms
-                console.log(apikeyunidade)
                 break;
             case '007':
-                apikeyunidade = api.apikeykl
+                apikeyunidade = api.production_apikeykl
                 break;
             case '100':
                 apikeyunidade = api.apikeycd
@@ -369,45 +368,56 @@ class InstaleapAPI {
         })
     }
 
-    criaPromocaoProgressiva(sku,) {
+    criaPromocaoProgressiva(sku, tipo, descricao, fatormultiplicativo1, fatormultiplicativo2, valormultiplicativo1, valormultiplicativo2) {
         const unidade = this.unidade;
         return new Promise((resolve, reject) => {
             const options = {
-                method: 'PUT',
-                url: 'https://api.xandar.instaleap.io' + `/jobs/${id}/external_data`,
+                method: 'POST',
+                url: api.url + `/promotion/promotions`,
                 headers: {
                     accept: 'application/json',
                     'content-type': 'application/json',
-                    'x-api-key': 'vyRAE82ZWYejUcoJgrEQgNiD1USpFBkp1kt2bcpj',
+                    'x-api-key': apikeyunidade,
                 },
                 body: {
-                    external_data: {
-                        webhook: { CODIGOPDV: numeropedido.toString() },
-                        backoffice: { CODIGOPDV: numeropedido.toString() },
-                        shopper_app: { CODIGOPDV: numeropedido.toString() }
-                    }
+                    sku: sku,
+                    storeReference: 'ATC-100',
+                    promotions: [
+                        {
+                            isActive: true,
+                            type: tipo,
+                            description: descricao,
+                            conditions: [{ qty: fatormultiplicativo1, price: valormultiplicativo1 }, { qty: fatormultiplicativo2, price: valormultiplicativo2 }],
+                            startDateTime: '2023-09-20T00:18:34-05:00',
+                            endDateTime: '2023-09-28T00:18:34-05:00'
+                        }
+                    ]
                 },
                 json: true
             };
             request(options, (error, response, body) => {
                 if (error) {
-                    log.gravaLog(`Enviado Numero do pedido para instaleap : ${id} Pedido ${numeropedido} `)
+                    log.gravaLog(`Erro ao Cadastrar Promocao Instaleap: ${sku} `)
                 }
                 else {
                     switch (response.statusCode) {
-                        case 200:
-                            log.gravaLog(`Enviado Numero do pedido para instaleap : ${id} Pedido ${numeropedido}`)
+                        case 201:
+                            log.gravaLog(`Enviado promocao Instaleap : ${sku}`)
                             resolve()
                             break;
                         case 403:
-                            log.gravaLog(`Erro ao Enviar Numero do pedido para instaleap : ${id} Pedido ${numeropedido}`)
+                            log.gravaLog(`Erro ao Enviar promocao instaleap ${sku}`)
+                            resolve()
+                            break;
+                        case 409:
+                            log.gravaLog(`promocao Duplicada instaleap ${sku}`)
                             resolve()
                             break;
                         default:
                             console.log(response.statusCode);
                             console.log(options['url']);
                             console.log(response.body)
-                            log.gravaLog(`Erro desconhecido ao tentar enviar numero do pedido para instaleap numero do pedido: ${numeropedido}`)
+                            log.gravaLog(`Erro desconhecido ao tentar enviar promocao instaleap ${sku}`)
                             resolve()
                             break;
                     }
@@ -419,5 +429,6 @@ class InstaleapAPI {
 
 }
 module.exports = InstaleapAPI;
+
 
 

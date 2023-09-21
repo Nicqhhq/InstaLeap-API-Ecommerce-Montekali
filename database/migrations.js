@@ -31,19 +31,19 @@ class Migrations {
         })
     }
     // TESTE TESTE TESTE TESTE TESTE TESTE TESTE TESTE TESTE TESTE
-    async dadosCriaPromocaoProgressiva(classe, data_inicio, data_fim, valida_status, multiplo_emb, percent_desconto) {
+    async dadosCriaPromocaoProgressiva(classe, data_inicio, data_fim, valida_status, multiplo_emb2, multiplo_emb3, percent_desconto2, percent_desconto3) {
         console.log("unidade da migrations: ", this.unidade)
         var select;
         const queryunidade = new Queryspromocoesatacado(this.unidade);
         switch (classe) {
             case 'A':
-                select = queryunidade.get_promocoes_progressiva_classe_A(data_inicio, data_fim, valida_status, multiplo_emb, percent_desconto);
+                select = queryunidade.cria_promocao_classe_A(data_inicio, data_fim, valida_status, multiplo_emb2, multiplo_emb3, percent_desconto2, percent_desconto3);
                 break;
             case 'B':
-                select = queryunidade.get_promocoes_progressiva_classe_B(data_inicio, data_fim, valida_status, multiplo_emb, percent_desconto);
+                select = queryunidade.cria_promocao_classe_B(data_inicio, data_fim, valida_status, multiplo_emb2, multiplo_emb3, percent_desconto2, percent_desconto3);
                 break;
             case 'C':
-                select = queryunidade.get_promocoes_progressiva_classe_C(data_inicio, data_fim, valida_status, multiplo_emb, percent_desconto);
+                select = queryunidade.cria_promocao_classe_C(data_inicio, data_fim, valida_status, multiplo_emb2, multiplo_emb3, percent_desconto2, percent_desconto3);
                 break
         }
         var dados = await db.pool.query(
@@ -51,7 +51,6 @@ class Migrations {
         )
         return [dados.rows, dados.rowCount];
     }
-
 
     async dadosCriaProdutoInicial() {
         console.log("unidade da migrations: ", this.unidade)

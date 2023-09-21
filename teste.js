@@ -1,8 +1,13 @@
 const path = require('path');
+const { emitKeypressEvents } = require('readline');
 const databaselocal = require(path.join(__dirname, 'database', 'localdatabase', 'controllerdatabase', 'initdatabase.js'));
+const Queryspromocoes = require(path.join(__dirname, 'database', 'atacado', 'queryspromocoesatacado.js'));
 const Migrations = require(path.join(__dirname, 'database', 'migrations.js'));
-
+const querypromocoes = new Queryspromocoes;
+const migrations = new Migrations('100')
 const db = new databaselocal()
+const Sender = require(path.join(__dirname, 'src', 'instaleapAPI', 'sender.js'));
+const sender = new Sender('100')
 async function Teste() {
     const margens = await db.getMargemAtivaLocalDB();
     const resultado = {};
@@ -26,32 +31,13 @@ async function Teste() {
             'datafim': datafim,
         });
     });
-    for (const classeMargem of Object.keys(resultado)) {
-        for (const fator in resultado[classeMargem]) {
-            if (resultado[classeMargem].hasOwnProperty.call(resultado[classeMargem], fator)) {
-                const element = resultado[classeMargem][fator];
-                // console.log(`
-                // -- Classe ${classeMargem} Multiplo ${element['multiplo']} 
-                // select prod_codigo as sku,
-                // 'stepped' as type_promo,
-                // 'Compre mais, pague menos' as Description,
-                // ${element['datainicio']} as data_inicio,
-                // ${element['datafim']} as data_fim,
-                // ${element['margemativa']} as status,
-                // ${element['multiplo']} * prod_fatoremb as qtd,
-                // coalesce(prun_prvenda3,0) - (coalesce(prun_prvenda3,0) * ${element['porcentagem']}/100) as preco
-                //     from produtos
-                //     inner join produn on prun_prod_codigo = prod_codigo and prun_unid_codigo = '100'
-                //         where prun_ativo = 'S'
-                //         and prun_unid_codigo in ('100')
-                //         and prod_status = 'N'
-                //         and prod_descricao not like ('%C.P%')
-                //         and prod_balanca = 'N'
-                //         and prod_dpto_codigo not in ('122','016','020','021','022','025','123','124','125','129')
-                //         and prod_extra2 in ('A1','A2','A3')`)
-            }
-        }
+    for (var classe of Object.keys(resultado)) {
+        var itens = await migrations.dadosCriaPromocaoProgressiva(classe, resultado[classe][0]['datainicio'], resultado[classe][0]['datafim'], true, resultado[classe][0]['multiplo'], resultado[classe][1]['multiplo'], resultado[classe][0]['porcentagem'], resultado[classe][1]['porcentagem']).then((_) => itens = _[0])
+        itens.forEach(item => {
+
+        })
     }
 }
+// Teste();
 
-Teste();
+sender.CriaPromocaoProgressivaAtacado()

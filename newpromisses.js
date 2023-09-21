@@ -27,7 +27,7 @@ class Promisses {
                 // 'atualizaCatalogo': [{ hour: 23, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 59, second: 59, millisecond: 0 }],
                 // 'atualizaCatalogoEstoquePreco': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
                 'criaProdutoInicial': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
-                'criaCatalogoInicial': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
+                // 'criaCatalogoInicial': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
             },
             '100': {
                 'criaProdutoAtacado': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
@@ -88,6 +88,7 @@ class Promisses {
         })
     }
 }
+
 
 const monteserrat = new Promisses('002');
 const kalimera = new Promisses('007');

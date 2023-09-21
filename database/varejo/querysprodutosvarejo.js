@@ -9,19 +9,22 @@ class Querysprodutosvarejo {
 
     produtos_criacao_inicial() {
         var select = `select prod_codigo as sku,
-            prod_descricao as descricao,
-            concat('https://www.colaboradormontekali.com/imagens_ecommerce/',prod_codbarras,'.jpg') as url_foto,
-            prod_emb as unidade,
-            prod_codbarras as codbarras,
-            prod_marca as marca
+        prod_descricao as descricao,
+        concat('https://www.colaboradormontekali.com/imagens_ecommerce/',prod_codbarras,'.jpg') as url_foto,
+        prod_emb as unidade,
+        prod_codbarras as codbarras,
+        prod_marca as marca,
+        case when prod_balanca = 'P' then coalesce(prod_extra16,1) 
+        else 1 end as clickMultiplier
             from produtos
             inner join produn on prod_codigo = prun_prod_codigo
-            where prun_ativo = 'S'
-            and prun_unid_codigo in ('${this.unidade}')
-            and prod_status = 'N'
-            and prod_descricao not like ('%C.P%')
-            and prod_dpto_codigo not in ('122','124','125','126','127','128','129')
-            group by 1,2,3,4,5,6`;
+                where prun_ativo = 'S'
+                and prun_unid_codigo in ('${this.unidade}')
+                and prod_status = 'N'
+                and prod_descricao not like ('%C.P%')
+                   and prod_dpto_codigo not in ('122','124','125','126','127','128','129')
+                    group by 1, 2, 3, 4, 5, 6, 7
+                    `;
         console.log("unidade query :", this.unidade)
         return select;
     }
@@ -37,7 +40,9 @@ class Querysprodutosvarejo {
         concat('https://www.colaboradormontekali.com/imagens_ecommerce/',prod_codbarras,'.jpg') as url_foto,
         prod_emb as unidade,
         prod_codbarras as codbarras,
-        prod_marca as marca
+        prod_marca as marca,
+        case when prod_balanca = 'P' then coalesce(prod_extra16,1) 
+        else 1 end as clickMultiplier
             from produtos
             inner join produn on prod_codigo = prun_prod_codigo
                 where prun_ativo = 'S'
@@ -45,8 +50,9 @@ class Querysprodutosvarejo {
                 and prod_status = 'N'
                 and prod_descricao not like ('%C.P%')
                 and prod_dpto_codigo not in ('122','124','125','126','127','128','129')
-                and prod_datacad >=current_date -5
-                    group by 1,2,3,4,5,6`
+                   and prod_datacad >= current_date -5
+                    group by 1, 2, 3, 4, 5, 6,7
+                    `
         return select;
     }
 
@@ -59,8 +65,9 @@ class Querysprodutosvarejo {
         prod_descricao as descricao,
         concat('https://www.colaboradormontekali.com/imagens_ecommerce/',prod_codbarras,'.jpg') as url_foto,
         prod_emb as unidade,
-        prod_codbarras as codbarras,
-        prod_marca as marca
+        prod_codbarras as codbarras, 
+        case when prod_balanca = 'P' then coalesce(prod_extra16,1) 
+        else 1 end as clickMultiplier
             from produtos
             inner join produn on prod_codigo = prun_prod_codigo
                 where prun_ativo = 'S'

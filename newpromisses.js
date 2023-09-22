@@ -2,7 +2,7 @@ const path = require('path');
 const Sender = require(path.join(__dirname, 'src', 'instaleapAPI', 'sender.js'));
 const { DateTime, Interval } = require("luxon");
 var primeiraabertura = true;
-const now = DateTime.local();
+
 const Server = require(path.join(__dirname, 'src', 'api', 'express.js'));
 var process = require('process')
 class Promisses {
@@ -45,10 +45,10 @@ class Promisses {
                 console.log(`Código Raiz: ${this.unidade}`);
                 const funcoes = controladortempo[this.unidade];
                 const funcoesParaExecutar = [];
-
                 for (const funcao in funcoes) {
                     if (funcoes.hasOwnProperty(funcao)) {
                         const tempos = funcoes[funcao];
+                        const now = DateTime.local();
                         const horarioinicio = new Date(); // Obtenha a hora atual
                         horarioinicio.setHours(tempos[0].hour, tempos[0].minute, tempos[0].second, tempos[0].millisecond);
                         const horariofim = new Date();

@@ -1,9 +1,8 @@
 const path = require('path');
 const Sender = require(path.join(__dirname, 'src', 'instaleapAPI', 'sender.js'));
+const Server = require(path.join(__dirname, 'src', 'api', 'express.js'));
 const { DateTime, Interval } = require("luxon");
 var primeiraabertura = true;
-
-const Server = require(path.join(__dirname, 'src', 'api', 'express.js'));
 var process = require('process')
 class Promisses {
     constructor(unidade, primeiraabertura) {
@@ -39,7 +38,6 @@ class Promisses {
                 // 'criaCatalogoInicialAtacado': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
             }
         }
-
         return new Promise((resolve, reject) => {
             if (controladortempo.hasOwnProperty(this.unidade)) {
                 console.log(`Código Raiz: ${this.unidade}`);
@@ -89,14 +87,6 @@ class Promisses {
         })
     }
 }
-setInterval(() => {
-    var memoria = process.memoryUsage()
-    console.log('Uso de memoria MB', {
-        rss: memoria.rss / 1024 / 1024,
-        heapTotal: memoria.heapTotal / 1024 / 1024,
-        heapUseds: memoria.heapUsed / 1024 / 1024,
-    })
-}, 1000)
 
 const monteserrat = new Promisses('002');
 const kalimera = new Promisses('007');

@@ -3,8 +3,28 @@ const Migrations = require(path.join(__dirname, '..', '..', 'database', 'migrati
 const db = new Migrations();
 class ManagerApi {
     async getMargem(req, res) {
-        const margens = await db.getMargem()
-        const resultado = {};
+        const resultado = [];
+        const margens = await db.getMargem();
+        const teste = await db.getMargemAtiva();
+        teste.forEach(item => {
+            if (!resultado[item.margem_nome]) {
+                resultado[item.margem_nome] = [];
+            }
+            if (item.margem_ativa == 1) {
+                resultado[item.margem_nome].push({
+                    'margem': item.margem_nome,
+                    'ativa': true,
+                    'fator': []
+                })
+            }
+            else {
+                resultado[item.margem_nome].push({
+                    'margem': item.margem_nome,
+                    'ativa': false,
+                    'fator': []
+                })
+            }
+        })
         margens.forEach(item => {
             const nome = item.margem_nome;
             const multiplo = item.margem_multiplo;
@@ -13,21 +33,22 @@ class ManagerApi {
             const margemativa = item.margem_ativa
             const datainicio = item.margem_sazonal_data_inicio;
             const datafim = item.margem_sazonal_data_fim;
-            const criada = item.margem_criada
+            const criada = item.margem_criada;
             if (!resultado[nome]) {
                 resultado[nome] = [];
             }
-            resultado[nome].push({
+            resultado[nome][0]['fator'].push({
                 'multiplo': multiplo.toString(),
                 'porcentagem': porcentagem,
                 'sazonal': sazonal,
                 'margemativa': margemativa,
                 'datainicio': datainicio,
                 'datafim': datafim,
-                'margem_criada': criada,
+                'margem_criada': criada
             });
         });
-        res.json(resultado)
+        res.json(Object.values(resultado));
+        console.log(resultado);
     }
     async setMargem(req, res) {
         var valor = 0;

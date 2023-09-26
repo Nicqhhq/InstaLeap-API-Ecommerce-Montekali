@@ -17,17 +17,17 @@ class Migrations {
     }
     async getMargem() {
         return new Promise(async (resolve, reject) => {
-            const margem = await localdatabase.getMargemLocalDB().then((_) => { resolve(_) }).catch((_) => { reject(_) })
+            await localdatabase.getMargemLocalDB().then((_) => { resolve(_) }).catch((_) => { reject(_) })
         })
     }
     async getMargemAtiva() {
         return new Promise(async (resolve, reject) => {
-            const margem = await localdatabase.getMargemAtivaLocalDB().then((_) => { resolve(_) }).catch((_) => { reject(_) })
+            await localdatabase.getMargemCabecalhoAtivaLocalDB().then((_) => { resolve(_) }).catch((_) => { reject(_) })
         })
     }
     async setMargem(select) {
         return new Promise(async (resolve, reject) => {
-            const margem = await localdatabase.setMargemLocalDB(select).then((_) => { resolve(_) }).catch((_) => { reject(_) })
+            await localdatabase.setMargemLocalDB(select).then((_) => { resolve(_) }).catch((_) => { reject(_) })
         })
     }
     // TESTE TESTE TESTE TESTE TESTE TESTE TESTE TESTE TESTE TESTE

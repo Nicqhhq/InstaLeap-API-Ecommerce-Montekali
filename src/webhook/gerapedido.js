@@ -42,10 +42,10 @@ class Gerapedido {
         for (const itens in listaitem[0]) {
             if (listaitem[0].hasOwnProperty.call(listaitem[0], itens)) {
                 const item = listaitem[0][itens];
-                fs.appendFileSync(`${arquivopedido}${numeropedido}.txt`, `${item}\n`,)
+                fs.appendFileSync(`${arquivopedido}PV${numeropedido}.txt`, `${item}\n`,)
             }
         }
-        fs.appendFileSync(`${arquivopedido}${numeropedido}.txt`, `CRLF\n`,),
+        fs.appendFileSync(`${arquivopedido}PV${numeropedido}.txt`, `CL^C47110863824^DS^\nCRLF\n`,),
             console.log(`Pedido Gravado numero: ${numeropedido}`)
         return numeropedido;
     }

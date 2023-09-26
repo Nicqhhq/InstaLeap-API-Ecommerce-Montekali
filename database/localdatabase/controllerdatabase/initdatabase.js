@@ -32,6 +32,13 @@ class LocalDatabase {
                     margem_criada numeric
                     )`
             )
+            this.db.run(`
+            CREATE TABLE IF NOT EXISTS margem(
+                margem_nome TEXT,
+                margem_ativa numeric,
+                margem_criada numeric
+                )`
+            )
         }
         )
     }
@@ -87,6 +94,21 @@ class LocalDatabase {
         return new Promise((resolve, reject) => {
             this.db.all(`
             SELECT * FROM margem_produtos WHERE  margem_ativa = 1`,
+                function (err, rows) {
+                    if (err) {
+                        reject(err.message)
+                    }
+                    else {
+                        resolve(rows)
+                    }
+                }
+            )
+        })
+    }
+    getMargemCabecalhoAtivaLocalDB() {
+        return new Promise((resolve, reject) => {
+            this.db.all(`
+            SELECT * FROM margem WHERE margem_ativa = 1`,
                 function (err, rows) {
                     if (err) {
                         reject(err.message)

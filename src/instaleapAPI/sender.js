@@ -379,16 +379,17 @@ class Sender {
         var delay = 0;
         // const dados = new migrations(this.unidade);
         // const instaleap = new instaleapAPI(this.unidade);
-        const rows = await this.dados.get_dadosAtualizaCatalogoPrecoEstoqueAtacado();
+        const rows = await this.dados.dadosAtualizaCatalogoPrecoEstoqueAtacado();
         const promises = [];
         for (const produto in rows) {
             if (rows.hasOwnProperty.call(rows, produto)) {
                 const itens = rows[produto];
                 const promise = new Promise((resolve) => {
                     setTimeout(async () => {
+                        console.log(itens['precommerce'], itens['sku'],)
                         await this.instaleap.atualizaCatalogo(
                             itens['sku'],
-                            itens['preco_regular'],
+                            itens['precommerce'],
                             parseInt(itens['estoque']),
                             itens['cod_store'],
                             itens['categoria'],
@@ -441,7 +442,8 @@ class Sender {
             itens.forEach(item => {
                 const promisse = new Promise((resolve, reject) => {
                     setTimeout(async () => {
-                        await this.instaleap.criaPromocaoProgressiva(item['sku'], item['type_promo'], item['description'], item['qtd2'], item['qtd3'], 30, 25)
+                        // console.log(item['sku'], item['type_promo'], item['description'], item['qtd2'], item['qtd3'], item['preco2'], item['preco3'])
+                        await this.instaleap.criaPromocaoProgressiva(item['sku'], item['type_promo'], item['description'], item['qtd2'], item['qtd3'], item['preco2'], item['preco3'])
                         resolve();
                     }, delay);
                 })

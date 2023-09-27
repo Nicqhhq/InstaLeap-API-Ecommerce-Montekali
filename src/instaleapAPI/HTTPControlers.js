@@ -273,7 +273,7 @@ class InstaleapAPI {
             request(options, (error, response, body) => {
                 if (error) {
                     log.gravaLog(`Atualiza catalogo unidade : ${unidade} item ${produtosku} Retentativa`)
-                    this.criaCatalogo(
+                    this.atualizaCatalogo(
                         produtosku,
                         produtopreco,
                         produtoestoque,

@@ -52,25 +52,49 @@ class ManagerApi {
     }
     async setMargem(req, res) {
         var valor = 0;
-        console.log(req.body)
-        for (const chave in req.body) {
-            if (req.body.hasOwnProperty(chave)) {
-                const arrayDeObjetos = req.body[chave];
-                for (const objeto of arrayDeObjetos) {
+        // console.log(req.body)
+        req.body.forEach(async (element) => {
+            for (const teste in element['fator']) {
+                if (element['fator'].hasOwnProperty.call(element['fator'], teste)) {
+                    const element1 = element['fator'][teste];
                     await db.setMargem(`
-                    UPDATE margem_produtos 
-                        set margem_porcentagem = ${objeto.porcentagem},
-                        margem_sazonal = ${objeto.sazonal},
-                        margem_sazonal_data_inicio = ${objeto.datainicio},
-                        margem_sazonal_data_fim = ${objeto.datafim},
-                        margem_ativa = ${objeto.margemativa}
-                        where margem_nome = '${chave}' and margem_multiplo = ${objeto.multiplo}`).then(
-                        (_) => valor += _
-                    ).catch((_) => console.log(`erro ${_}`))
+                        UPDATE margem_produtos 
+                            set margem_porcentagem = ${element1.porcentagem},
+                            margem_sazonal = ${element1.sazonal},
+                            margem_sazonal_data_inicio = ${element1.datainicio},
+                            margem_sazonal_data_fim = ${element1.datafim},
+                            margem_ativa = ${element1.margemativa}
+                            where margem_nome = '${element['margem']}' and margem_multiplo = ${element1.multiplo}`).then((_) => { valor += _, console.log(_) })
+                        .catch((_) => console.log(`erro ${_}`))
                 }
-
             }
-        }
+        })
+        // for (const teste in req.body) {
+        //     console.log(teste)
+        // }
+        // console.log(req.body)
+        // for (const chave in req.body) {
+        //     if (req.body.hasOwnProperty(chave)) {
+        //         const arrayDeObjetos = req.body[chave];
+        //         // console.log(arrayDeObjetos)
+        //         for(const margem of arrayDeObjetos){
+        //             cons
+        //         }
+        //     }
+        //     for (const objeto of arrayDeObjetos) {
+        //         await db.setMargem(`
+        //         UPDATE margem_produtos 
+        //             set margem_porcentagem = ${objeto.porcentagem},
+        //             margem_sazonal = ${objeto.sazonal},
+        //             margem_sazonal_data_inicio = ${objeto.datainicio},
+        //             margem_sazonal_data_fim = ${objeto.datafim},
+        //             margem_ativa = ${objeto.margemativa}
+        //             where margem_nome = '${chave}' and margem_multiplo = ${objeto.multiplo}`).then(
+        //             (_) => valor += _
+        //         ).catch((_) => console.log(`erro ${_}`))
+        //     }
+
+        // }
         res.status(200).json({ "Valores Atualizados": valor })
     }
 }

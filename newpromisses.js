@@ -33,7 +33,8 @@ class Promisses {
                 'criaProdutoAtacado': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
                 'atualizaProdutoAtacado': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
                 'criaCatalogoAtacado': [{ hour: 22, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
-                'CriaPromocaoProgressivaAtacado': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
+                'atualizaCatalogoPrecoEstoqueAtacado': [{ hour: 5, minute: 50, second: 0, millisecond: 0 }, { hour: 20, minute: 0, second: 0, millisecond: 0 }],
+                // 'CriaPromocaoProgressivaAtacado': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond:  0 }],
                 // 'criaProdutoInicial': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
                 // 'criaCatalogoInicialAtacado': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
             }

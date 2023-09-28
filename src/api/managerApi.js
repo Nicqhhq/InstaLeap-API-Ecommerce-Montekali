@@ -66,35 +66,14 @@ class ManagerApi {
                             margem_ativa = ${element1.margemativa}
                             where margem_nome = '${element['margem']}' and margem_multiplo = ${element1.multiplo}`).then((_) => { valor += _, console.log(_) })
                         .catch((_) => console.log(`erro ${_}`))
+                    await db.setMargem(`
+                    UPDATE margem 
+                        set margem_ativa = ${element['ativa'] == 1 ? true : false}
+                        where margem_nome = '${element['margem']}'`).then((_) => { })
+                        .catch((_) => console.log(`erro ${_}`))
                 }
             }
         })
-        // for (const teste in req.body) {
-        //     console.log(teste)
-        // }
-        // console.log(req.body)
-        // for (const chave in req.body) {
-        //     if (req.body.hasOwnProperty(chave)) {
-        //         const arrayDeObjetos = req.body[chave];
-        //         // console.log(arrayDeObjetos)
-        //         for(const margem of arrayDeObjetos){
-        //             cons
-        //         }
-        //     }
-        //     for (const objeto of arrayDeObjetos) {
-        //         await db.setMargem(`
-        //         UPDATE margem_produtos 
-        //             set margem_porcentagem = ${objeto.porcentagem},
-        //             margem_sazonal = ${objeto.sazonal},
-        //             margem_sazonal_data_inicio = ${objeto.datainicio},
-        //             margem_sazonal_data_fim = ${objeto.datafim},
-        //             margem_ativa = ${objeto.margemativa}
-        //             where margem_nome = '${chave}' and margem_multiplo = ${objeto.multiplo}`).then(
-        //             (_) => valor += _
-        //         ).catch((_) => console.log(`erro ${_}`))
-        //     }
-
-        // }
         res.status(200).json({ "Valores Atualizados": valor })
     }
 }

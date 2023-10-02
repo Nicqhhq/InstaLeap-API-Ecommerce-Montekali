@@ -30,7 +30,7 @@ class Timer {
     data_atual_formatada() {
         const now = new Date;
         const dias = now.getDate() < 10 ? `0${now.getDate()}` : now.getDate();
-        const mes = now.getMonth() < 10 ? `0${now.getMonth()}` : now.getMonth();
+        const mes = now.getMonth() + 1 < 10 ? `0${now.getMonth()}` : now.getMonth() + 1;
         const ano = now.getFullYear()
         const data = `${dias}${mes}${ano}`
         return data
@@ -42,7 +42,7 @@ class Timer {
         const segundos = now.getSeconds() < 10 ? `0${now.getSeconds()}` : now.getSeconds();
         const tempo = `${horas}:${minutos}:${segundos}`
         const dias = now.getDate() < 10 ? `0${now.getDate()}` : now.getDate();
-        const mes = now.getMonth() < 10 ? `0${now.getMonth()}` : now.getMonth();
+        const mes = now.getMonth() + 1 < 10 ? `0${now.getMonth()}` : now.getMonth() + 1;
         const ano = now.getFullYear()
         const data = `${dias}/${mes}/${ano}`
         const datahora = `${data} - ${tempo}`

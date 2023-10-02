@@ -386,7 +386,6 @@ class Sender {
                 const itens = rows[produto];
                 const promise = new Promise((resolve) => {
                     setTimeout(async () => {
-                        console.log(itens['precommerce'], itens['sku'],)
                         await this.instaleap.atualizaCatalogo(
                             itens['sku'],
                             itens['precommerce'],
@@ -412,8 +411,6 @@ class Sender {
     }
     async CriaPromocaoProgressivaAtacado() {
         var delay = 0;
-        // const dados = new migrations(this.unidade);
-        // const instaleap = new instaleapAPI(this.unidade);
         const margens = await db.getMargemAtivaLocalDB();
         const resultado = {};
         const promises = [];

@@ -1,5 +1,5 @@
 const path = require('path');
-const api = require(path.join(__dirname, 'URL.js'));
+const api = require(path.join(__dirname, 'url.js'));
 const log = require(path.join(__dirname, '..', 'configlogs', 'gravalog.js'));
 const request = require('request');
 var apikeyunidade;
@@ -303,7 +303,7 @@ class InstaleapAPI {
                             resolve()
                             break;
                         case 409:
-                            log.gravaLog(`Atualiza catalogo unidade : ${unidade} : Statuscode: 409 Catalogo item ${produtosku} ja esta atualizado`)
+                            log.gravaLog(`Atualiza catalogo unidade : ${unidade} : Statuscode: 409 Catalogo item ${produtosku} ja esta atualizado ${JSON.stringify(response.body)}`)
                             //console.log(`Statuscode: 204 \nCatalogo ${produtosku} Atualizado`);
                             resolve()
                             break;
@@ -389,7 +389,7 @@ class InstaleapAPI {
                             description: descricao,
                             conditions: [{ qty: fatormultiplicativo1, price: valormultiplicativo1 }, { qty: fatormultiplicativo2, price: valormultiplicativo2 }],
                             startDateTime: '2023-09-20T00:18:34-05:00',
-                            endDateTime: '2023-09-28T00:18:34-05:00'
+                            endDateTime: '2023-09-30T00:18:34-05:00'
                         }
                     ]
                 },

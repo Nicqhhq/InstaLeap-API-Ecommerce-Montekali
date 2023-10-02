@@ -20,6 +20,9 @@ router.post('/v1/ecommerce/api/ecommerce/setmargem', (req, res) => {
 router.post('/v1/ecommerce/api/ecommerce/clientes', (req, res) => {
     webhook.getClientes(req, res);
 })
+router.post('/v1/ecommerce/api/auth', (req, res) => {
+    webhook.authUser(req, res);
+})
 
 
 module.exports = router

@@ -30,6 +30,11 @@ class Migrations {
             await localdatabase.setMargemLocalDB(select).then((_) => { resolve(_) }).catch((_) => { reject(_) })
         })
     }
+    async getAuthUsuario(usuario, senha) {
+        return new Promise(async (resolve, reject) => {
+            await localdatabase.getAuthUsuario(usuario, senha).then((_) => { resolve(_) }).catch((_) => { reject(_) })
+        })
+    }
     // TESTE TESTE TESTE TESTE TESTE TESTE TESTE TESTE TESTE TESTE
     async dadosCriaPromocaoProgressiva(classe, data_inicio, data_fim, valida_status, multiplo_emb2, multiplo_emb3, percent_desconto2, percent_desconto3) {
         console.log("unidade da migrations: ", this.unidade)

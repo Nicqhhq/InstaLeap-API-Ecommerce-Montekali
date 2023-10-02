@@ -16,10 +16,10 @@ class Gerapedido {
         const dadosUltimoPedido = await db.retornaUltimoPedido()
         return dadosUltimoPedido['pedido_num'] + 1;
     }
-    async reservaNumeroPedido(jobId) {
+    async reservaNumeroPedido(jobId, unidade) {
         console.log(jobId, 'reserva numero pedido');
         const ultimopedido = await this.getNumeroPedidoAtual()
-        db.gravaPedido(data, 'MON-002', jobId);
+        db.gravaPedido(data, unidade, jobId);
         instaleap.atualizaNumeracaoPedido(jobId, ultimopedido);
         return ultimopedido;
     }

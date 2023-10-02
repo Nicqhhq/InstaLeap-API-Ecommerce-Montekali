@@ -39,6 +39,14 @@ class LocalDatabase {
                 margem_criada numeric
                 )`
             )
+            this.db.run(`
+            CREATE TABLE IF NOT EXISTS usuarios(
+                usuario_id INTEGER,
+                usuario_nome TEXT,
+                usuario_cargo TEXT,
+                usuario_senha TEXT
+                )`
+            )
         }
         )
     }
@@ -109,6 +117,21 @@ class LocalDatabase {
         return new Promise((resolve, reject) => {
             this.db.all(`
             SELECT * FROM margem WHERE margem_ativa = 1`,
+                function (err, rows) {
+                    if (err) {
+                        reject(err.message)
+                    }
+                    else {
+                        resolve(rows)
+                    }
+                }
+            )
+        })
+    }
+    getAuthUsuario(usuario, senha) {
+        return new Promise((resolve, reject) => {
+            this.db.all(`
+            SELECT * FROM usuarios WHERE usuario_cod = '${usuario}' and usuario_senha = '${senha}' and usuario_ativo = 1`,
                 function (err, rows) {
                     if (err) {
                         reject(err.message)

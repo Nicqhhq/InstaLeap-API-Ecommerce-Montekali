@@ -1,8 +1,9 @@
 var request = require('request');
 const path = require('path');
 const Gerapedido = require(path.join(__dirname, '..', 'webhook', './gerapedido'));
-const localdatabase = require(path.join(__dirname, '..', '..', 'database', 'localdatabase', 'controllerdatabase', 'initdatabase.js'));
 const ApiRP = require(path.join(__dirname, '..', 'rpinfoAPI', 'HTTPControlers.js'));
+const Migrations = require(path.join(__dirname, '..', '..', 'database', 'migrations.js'))
+const db = new Migrations();
 const gerapedido = new Gerapedido;
 const apiRP = new ApiRP();
 class WebHook {
@@ -25,7 +26,7 @@ class WebHook {
     }
     async onCreatedVarejo(req, res) {
         const object = req.body
-        var numeropedido = await gerapedido.reservaNumeroPedido(object['job']['id']);
+        var numeropedido = await gerapedido.reservaNumeroPedido(object['job']['id'], object['clientId']);
         console.log(object['job']['id'], 'Status pedido');
         res.json({
             'AVISO': 'CREATED ACEITO',
@@ -34,7 +35,7 @@ class WebHook {
     }
     async onCreatedAtacado(req, res) {
         const object = req.body
-        var numeropedido = await gerapedido.reservaNumeroPedido(object['job']['id']);
+        var numeropedido = await gerapedido.reservaNumeroPedido(object['job']['id'], object['clientId']);
         const itenspedido = [];
         const itensvalor = [];
         var responsebody = req.body
@@ -107,6 +108,23 @@ class WebHook {
             'NUMERO DO PEDIDO': retorno
         })
     }
+    async authUser(req, res) {
+        const body = req.body;
+        const usuario = body['usuario'];
+        const senha = body['senha'];
+        console.log(body)
+        const teste = await db.getAuthUsuario(usuario, senha)
+        if (Object.values(teste).length > 0) {
+            res.status(200).send(teste)
+        }
+        else {
+            res.status(401).send({
+                "usuario": 'nao autorizado'
+            });
+        }
+        console.log(usuario, senha)
+    }
+
 }
 
 module.exports = WebHook;

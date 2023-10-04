@@ -232,7 +232,7 @@ class Sender {
                     setTimeout(async () => {
                         await this.instaleap.criaCatalogo(
                             itens['sku'],
-                            10,
+                            itens['precommerce'],
                             parseInt(itens['estoque']),
                             itens['cod_store'],
                             itens['categoria'],

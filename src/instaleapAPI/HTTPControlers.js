@@ -1,6 +1,8 @@
 const path = require('path');
 const api = require(path.join(__dirname, 'url.js'));
 const log = require(path.join(__dirname, '..', 'configlogs', 'gravalog.js'));
+const Data = require(path.join(__dirname, '..', 'configlogs', 'time.js'))
+const data = new Data()
 const request = require('request');
 var apikeyunidade;
 class InstaleapAPI {
@@ -369,6 +371,7 @@ class InstaleapAPI {
     }
 
     criaPromocaoProgressiva(sku, tipo, descricao, fatormultiplicativo1, fatormultiplicativo2, valormultiplicativo1, valormultiplicativo2) {
+        const datas = data.formataDataPromo()
         const unidade = this.unidade;
         return new Promise((resolve, reject) => {
             const options = {
@@ -388,8 +391,8 @@ class InstaleapAPI {
                             type: tipo,
                             description: descricao,
                             conditions: [{ qty: fatormultiplicativo1, price: valormultiplicativo1 }, { qty: fatormultiplicativo2, price: valormultiplicativo2 }],
-                            startDateTime: '2023-09-20T00:18:34-05:00',
-                            endDateTime: '2023-09-30T00:18:34-05:00'
+                            startDateTime: datas[0],
+                            endDateTime: datas[1]
                         }
                     ]
                 },
@@ -402,7 +405,7 @@ class InstaleapAPI {
                 else {
                     switch (response.statusCode) {
                         case 201:
-                            log.gravaLog(`Enviado promocao Instaleap : ${sku}`)
+                            log.gravaLog(`Enviado promocao Instaleap : ${sku} ${JSON.stringify(response.body)}`)
                             resolve()
                             break;
                         case 403:
@@ -410,14 +413,14 @@ class InstaleapAPI {
                             resolve()
                             break;
                         case 409:
-                            log.gravaLog(`promocao Duplicada instaleap ${sku}`)
+                            log.gravaLog(`promocao Duplicada instaleap ${sku} ${JSON.stringify(response.body)}`)
                             resolve()
                             break;
                         default:
                             console.log(response.statusCode);
                             console.log(options['url']);
                             console.log(response.body)
-                            log.gravaLog(`Erro desconhecido ao tentar enviar promocao instaleap ${sku}`)
+                            log.gravaLog(`Erro desconhecido ao tentar enviar promocao instaleap ${sku} ${JSON.stringify(response.body)}`)
                             resolve()
                             break;
                     }

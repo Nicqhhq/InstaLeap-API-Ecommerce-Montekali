@@ -48,6 +48,24 @@ class Timer {
         const datahora = `${data} - ${tempo}`
         return datahora
     }
+    formataDataPromo() {
+        const dataInicio = new Date();
+        const dataFim = new Date();
+        dataFim.setHours(23, 59, 0, 0);
+        const formataData = (data) => {
+            const ano = data.getFullYear();
+            const mes = String(data.getMonth() + 1).padStart(2, '0');
+            const dia = String(data.getDate()).padStart(2, '0');
+            const horas = String(data.getHours()).padStart(2, '0');
+            const minutos = String(data.getMinutes()).padStart(2, '0');
+            const segundos = String(data.getSeconds()).padStart(2, '0');
+            const fusoHorario = '-03:00'; // Fuso horário desejado
+            return `${ano}-${mes}-${dia}T${horas}:${minutos}:${segundos}${fusoHorario}`;
+        };
+        const dataInicioFormatada = formataData(dataInicio);
+        const dataFimFormatada = formataData(dataFim);
+        return [dataInicioFormatada, dataFimFormatada]
+    }
 
 }
 

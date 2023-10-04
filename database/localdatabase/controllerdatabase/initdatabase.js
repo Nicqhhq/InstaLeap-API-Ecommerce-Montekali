@@ -159,6 +159,34 @@ class LocalDatabase {
             )
         })
     }
+    getHorariosMargemLocalDB() {
+        return new Promise((resolve, reject) => {
+            this.db.all(`
+                SELECT 
+                horafuncao_unidade, 
+                horafuncao_nome, 
+                hora_inicio_hour, 
+                hora_inicio_minute, 
+                hora_inicio_second, 
+                hora_inicio_millisecond, 
+                hora_fim_hour, 
+                hora_fim_minute, 
+                hora_fim_second, 
+                hora_fim_millisecond 
+                FROM horarios
+                WHERE horafuncao_ativa = 1
+            `,
+                function (err, rows) {
+                    if (err) {
+                        reject(err);
+                    }
+                    else {
+                        resolve(rows)
+                    }
+                }
+            )
+        })
+    }
 }
 
 module.exports = LocalDatabase;

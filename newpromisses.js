@@ -1,6 +1,7 @@
 const path = require('path');
 const Sender = require(path.join(__dirname, 'src', 'instaleapAPI', 'sender.js'));
 const Server = require(path.join(__dirname, 'src', 'api', 'express.js'));
+const Migrations = require(path.join(__dirname, 'database', 'migrations.js'));
 const { DateTime, Interval } = require("luxon");
 var primeiraabertura = true;
 class Promisses {
@@ -11,33 +12,34 @@ class Promisses {
         this.sender = new Sender(this.unidade)
     }
     async inicializacao() {
-        const controladortempo = {
-            '002': {
-                'criaProduto': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
-                'atualizaProduto': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
-                'criaCatalogo': [{ hour: 22, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
-                'atualizaCatalogo': [{ hour: 23, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 59, second: 59, millisecond: 0 }],
-                'atualizaCatalogoEstoquePreco': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
-            },
-            '007': {
-                'criaProduto': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
-                'atualizaProduto': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
-                'criaCatalogo': [{ hour: 22, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
-                'atualizaCatalogo': [{ hour: 23, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 59, second: 59, millisecond: 0 }],
-                'atualizaCatalogoEstoquePreco': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
-                // 'criaProdutoInicial': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
-                // 'criaCatalogoInicial': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
-            },
-            '100': {
-                // 'criaProdutoAtacado': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
-                // 'atualizaProdutoAtacado': [{ hour: 20, minute: 0, second: 0, millisecond: 0 }, { hour: 22, minute: 0, second: 0, millisecond: 0 }],
-                // 'criaCatalogoAtacado': [{ hour: 22, minute: 0, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
-                'atualizaCatalogoPrecoEstoqueAtacado': [{ hour: 5, minute: 50, second: 0, millisecond: 0 }, { hour: 20, minute: 0, second: 0, millisecond: 0 }],
-                'CriaPromocaoProgressivaAtacado': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
-                // 'criaProdutoInicial': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
-                // 'criaCatalogoInicialAtacado': [{ hour: 6, minute: 50, second: 0, millisecond: 0 }, { hour: 23, minute: 0, second: 0, millisecond: 0 }],
+        const migrations = new Migrations(this.unidade)
+        var controladortempo = {}
+        const dados = await migrations.getHorariosMargem();
+        dados.forEach(row => {
+            const { horafuncao_unidade, horafuncao_nome, hora_inicio_hour, hora_inicio_minute, hora_inicio_second, hora_inicio_millisecond, hora_fim_hour, hora_fim_minute, hora_fim_second, hora_fim_millisecond } = row;
+
+            if (!controladortempo[horafuncao_unidade]) {
+                controladortempo[horafuncao_unidade] = {};
             }
-        }
+
+            if (!controladortempo[horafuncao_unidade][horafuncao_nome]) {
+                controladortempo[horafuncao_unidade][horafuncao_nome] = [];
+            }
+
+            controladortempo[horafuncao_unidade][horafuncao_nome].push({
+                hour: hora_inicio_hour,
+                minute: hora_inicio_minute,
+                second: hora_inicio_second,
+                millisecond: hora_inicio_millisecond
+            });
+
+            controladortempo[horafuncao_unidade][horafuncao_nome].push({
+                hour: hora_fim_hour,
+                minute: hora_fim_minute,
+                second: hora_fim_second,
+                millisecond: hora_fim_millisecond
+            });
+        });
         return new Promise((resolve, reject) => {
             if (controladortempo.hasOwnProperty(this.unidade)) {
                 console.log(`Código Raiz: ${this.unidade}`);
@@ -86,6 +88,9 @@ class Promisses {
             }
         })
     }
+
+
+
 }
 
 const monteserrat = new Promisses('002');
@@ -107,7 +112,7 @@ async function iniciar() {
             // await kalimera.inicializacao().then(() => console.log("Finalizada Kalimera"));
         }, 1800000);
         setInterval(async () => {
-            // await atacadocerto.inicializacao().then(() => console.log("Finalizada Atacado certo"));
+            await atacadocerto.inicializacao().then(() => console.log("Finalizada Atacado certo"));
         }, 3600000);
         primeiraabertura = false;
     }

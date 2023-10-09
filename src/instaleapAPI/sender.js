@@ -439,7 +439,6 @@ class Sender {
             itens.forEach(item => {
                 const promisse = new Promise((resolve, reject) => {
                     setTimeout(async () => {
-                        // console.log(item['sku'], item['type_promo'], item['description'], item['qtd2'], item['qtd3'], item['preco2'], item['preco3'])
                         await this.instaleap.criaPromocaoProgressiva(item['sku'], item['type_promo'], item['description'], item['qtd2'], item['qtd3'], item['preco2'], item['preco3'])
                         resolve();
                     }, delay);

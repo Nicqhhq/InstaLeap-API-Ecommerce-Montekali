@@ -32,7 +32,7 @@ class Gerapedido {
                 const itemquantidade = produtos['quantidade'] * 1000
                 const itemvalor = parseInt(produtos['valor'].toString().replace('.', ''))
                 const itemvalorformt = itemvalor < 1000 ? itemvalor * 10 : itemvalor
-                listaitem.push(`IT^A${itemean}^B${itemquantidade}^C${itemvalorformt}^`)
+                listaitem.push(`IT${itemean}00${itemquantidade}000000${itemvalorformt}`)
             }
         }
         return [listaitem, numeropedido];
@@ -42,12 +42,13 @@ class Gerapedido {
         for (const itens in listaitem[0]) {
             if (listaitem[0].hasOwnProperty.call(listaitem[0], itens)) {
                 const item = listaitem[0][itens];
-                fs.appendFileSync(`${arquivopedido}PV${numeropedido}.txt`, `${item}\n`,)
+                fs.appendFileSync(`${arquivopedido}VD${numeropedido}.txt`, `${item}\n`,)
             }
         }
-        fs.appendFileSync(`${arquivopedido}PV${numeropedido}.txt`, `CL^C47110863824^DS^\nCRLF\n`,),
+        fs.appendFileSync(`${arquivopedido}VD${numeropedido}.txt`, `AC000\n`,),
             console.log(`Pedido Gravado numero: ${numeropedido}`)
         return numeropedido;
+
     }
 }
 

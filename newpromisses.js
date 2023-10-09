@@ -49,7 +49,7 @@ class Promisses {
                     if (funcoes.hasOwnProperty(funcao)) {
                         const tempos = funcoes[funcao];
                         const now = DateTime.local();
-                        const horarioinicio = new Date(); // Obtenha a hora atual
+                        const horarioinicio = new Date();
                         horarioinicio.setHours(tempos[0].hour, tempos[0].minute, tempos[0].second, tempos[0].millisecond);
                         const horariofim = new Date();
                         horariofim.setHours(tempos[1].hour, tempos[1].minute, tempos[1].second, tempos[1].millisecond);
@@ -62,11 +62,9 @@ class Promisses {
                 }
                 if (funcoesParaExecutar.length > 0) {
                     console.log(`Dentro do tempo ${funcoesParaExecutar.join(', ')}`);
-
-                    // Função para executar as promessas sequencialmente
                     const executePromisesSequentially = async () => {
                         for (const funcaoExecutar of funcoesParaExecutar) {
-                            await this.sender[funcaoExecutar](); // Aguardar a conclusão da função antes de prosseguir
+                            await this.sender[funcaoExecutar]();
                         }
                     };
 
@@ -89,8 +87,6 @@ class Promisses {
         })
     }
 
-
-
 }
 
 const monteserrat = new Promisses('002');
@@ -101,7 +97,7 @@ server.start();
 async function iniciar() {
     if (primeiraabertura == true) {
         // await monteserrat.inicializacao().then(() => console.log("Finalizada Monte Serrat"));
-        // await kalimera.inicializacao().then(() => console.log("Finalizada Kalimera"));
+        await kalimera.inicializacao().then(() => console.log("Finalizada Kalimera"));
         await atacadocerto.inicializacao().then(() => console.log("Finalizada Atacado certo"));
         primeiraabertura = false;
         iniciar();
@@ -109,7 +105,7 @@ async function iniciar() {
     else {
         setInterval(async () => {
             // await monteserrat.inicializacao().then(() => console.log("Finalizada Monte Serrat"));
-            // await kalimera.inicializacao().then(() => console.log("Finalizada Kalimera"));
+            await kalimera.inicializacao().then(() => console.log("Finalizada Kalimera"));
         }, 1800000);
         setInterval(async () => {
             await atacadocerto.inicializacao().then(() => console.log("Finalizada Atacado certo"));

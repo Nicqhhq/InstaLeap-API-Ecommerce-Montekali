@@ -4,10 +4,14 @@ const log = require(path.join(__dirname, '..', 'configlogs', 'gravalog.js'));
 const Data = require(path.join(__dirname, '..', 'configlogs', 'time.js'))
 const data = new Data()
 const request = require('request');
-var apikeyunidade;
+
 class InstaleapAPI {
     constructor(unidade) {
         this.unidade = unidade;
+        this.apikeyunidade = this.apikey(unidade)
+    }
+    apikey(unidade) {
+        var apikeyunidade;
         switch (unidade) {
             case '002':
                 apikeyunidade = api.apikeyms
@@ -16,13 +20,12 @@ class InstaleapAPI {
                 apikeyunidade = api.production_apikeykl
                 break;
             case '100':
-                apikeyunidade = api.apikeycd
-                break;
-            default:
+                apikeyunidade = api.production_apikeyatc
                 break;
         }
+        console.log(apikeyunidade)
+        return apikeyunidade;
     }
-
     async criarProduto(produtonome, produtosku, produtoembalagem, produtourlfoto, produtoean, produtomarca, fatormultiplicativo) {
         return new Promise((resolve, reject) => {
             const unidade = this.unidade
@@ -31,7 +34,7 @@ class InstaleapAPI {
                 url: api.url + '/product/products',
                 headers: {
                     accept: 'application/json',
-                    'x-api-key': apikeyunidade,
+                    'x-api-key': this.apikeyunidade,
                     'content-type': 'application/json'
                 },
                 body: {
@@ -53,7 +56,6 @@ class InstaleapAPI {
                     )).catch(reject());
                 }
                 else {
-                    console.log(apikeyunidade)
                     switch (response.statusCode) {
                         case 201:
                             log.gravaLog(`Criacao de produto unidade : ${unidade} : Statuscode: 201 ${produtonome}-${produtosku} Criado`)
@@ -97,7 +99,7 @@ class InstaleapAPI {
                 url: api.url + '/product/products/sku/' + produtosku,
                 headers: {
                     accept: 'application/json',
-                    'x-api-key': apikeyunidade,
+                    'x-api-key': this.apikeyunidade,
                     'content-type': 'application/json'
                 },
                 body: {
@@ -173,7 +175,7 @@ class InstaleapAPI {
                 url: api.url + '/catalog/catalogs',
                 headers: {
                     accept: 'application/json',
-                    'x-api-key': apikeyunidade,
+                    'x-api-key': this.apikeyunidade,
                     'content-type': 'application/json'
                 },
                 body: {
@@ -258,7 +260,7 @@ class InstaleapAPI {
                 url: api.url + `/catalog/catalogs/sku/${produtosku}/storeReference/${lojaproduto}`,
                 headers: {
                     accept: 'application/json',
-                    'x-api-key': apikeyunidade,
+                    'x-api-key': this.apikeyunidade,
                     'content-type': 'application/json'
                 },
                 body: {
@@ -380,7 +382,7 @@ class InstaleapAPI {
                 headers: {
                     accept: 'application/json',
                     'content-type': 'application/json',
-                    'x-api-key': apikeyunidade,
+                    'x-api-key': this.apikeyunidade,
                 },
                 body: {
                     sku: sku,

@@ -1,10 +1,10 @@
-var request = require('request');
 const path = require('path');
 const Gerapedido = require(path.join(__dirname, '..', 'webhook', './gerapedido'));
 const ApiRP = require(path.join(__dirname, '..', 'rpinfoAPI', 'HTTPControlers.js'));
 const Migrations = require(path.join(__dirname, '..', '..', 'database', 'migrations.js'))
+const log = require(path.join(__dirname, '..', 'configlogs', 'gravalog.js'));
 const db = new Migrations();
-const gerapedido = new Gerapedido;
+const gerapedido = new Gerapedido();
 const apiRP = new ApiRP();
 class WebHook {
     statusPedido(req, res) {
@@ -28,6 +28,7 @@ class WebHook {
         const object = req.body
         var numeropedido = await gerapedido.reservaNumeroPedido(object['job']['id'], object['clientId']);
         console.log(object['job']['id'], 'Status pedido');
+        log.gravaLog(`WebHook: OnCreated Varejo numero reservado ${numeropedido}`)
         res.json({
             'AVISO': 'CREATED ACEITO',
             'NUMERO DO PEDIDO': numeropedido,
@@ -36,6 +37,7 @@ class WebHook {
     async onCreatedAtacado(req, res) {
         const object = req.body
         var numeropedido = await gerapedido.reservaNumeroPedido(object['job']['id'], object['clientId']);
+        log.gravaLog(`WebHook: Oncreated Atacado numero reservado ${numeropedido}`)
         const itenspedido = [];
         const itensvalor = [];
         var responsebody = req.body
@@ -49,7 +51,12 @@ class WebHook {
         for (const itens in itenspedido) {
             if (itenspedido.hasOwnProperty.call(itenspedido, itens)) {
                 const produtos = itenspedido[itens];
-                itensvalor.push({ codigoProduto: produtos['attributes']['sku'], valorProduto: produtos['attributes']['posPrice'], qtdUnitaria: produtos['found_quantity'], qtdEmbalagem: produtos['found_quantity'], })
+                itensvalor.push({
+                    codigoProduto: produtos['attributes']['sku'],
+                    valorProduto: produtos['attributes']['posPrice'],
+                    qtdUnitaria: produtos['found_quantity'],
+                    qtdEmbalagem: produtos['found_quantity'],
+                })
             }
         }
         const dados = {
@@ -90,6 +97,7 @@ class WebHook {
         const itensvalor = [];
         var objeto = req.body['job']['job_items'];
         var numeropedido = req.body['job']['externalData']['CODIGOPDV']
+        log.gravaLog(`WebHook: PickingFinished Pedido Recebido ERP numero : ${numeropedido}`)
         for (const itens in objeto) {
             if (objeto.hasOwnProperty.call(objeto, itens)) {
                 const produtos = objeto[itens];
@@ -103,6 +111,7 @@ class WebHook {
             }
         }
         const retorno = gerapedido.gravapedido(numeropedido, itensvalor);
+        log.gravaLog(`WebHook: PickingFinished Pedido Gravado ERP numero : ${retorno}`)
         res.json({
             'AVISO': 'PICKING_FINISHED ACEITO',
             'NUMERO DO PEDIDO': retorno

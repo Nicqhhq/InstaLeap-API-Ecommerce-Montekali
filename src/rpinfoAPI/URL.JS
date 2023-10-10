@@ -1,6 +1,13 @@
-var url = 'http://10.100.11.54:9000';
-var usuario = '100076';
-var senha = '100076';
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') })
+var url = process.env.URLRPSERVICES;
+var usuario = process.env.APIRPSERVICESUSER;
+var senha = process.env.APIRPSERVICESPASS;
+console.log({
+    url: url,
+    usuario: usuario,
+    senha: senha
+})
 exports.url = url;
 exports.usuario = usuario;
 exports.senha = senha;

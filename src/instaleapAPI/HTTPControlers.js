@@ -23,7 +23,6 @@ class InstaleapAPI {
                 apikeyunidade = api.production_apikeyatc
                 break;
         }
-        console.log(apikeyunidade)
         return apikeyunidade;
     }
     async criarProduto(produtonome, produtosku, produtoembalagem, produtourlfoto, produtoean, produtomarca, fatormultiplicativo) {

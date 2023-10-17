@@ -341,6 +341,8 @@ class InstaleapAPI {
     atualizaNumeracaoPedido(id, numeropedido) {
         const unidade = this.unidade;
         console.log(id, 'atualiza numeracaoPedido')
+        console.log(this.apikeyLogisticaunidade)
+        console.log(id)
         return new Promise((resolve, reject) => {
             const options = {
                 method: 'PUT',
@@ -366,11 +368,13 @@ class InstaleapAPI {
                 else {
                     switch (response.statusCode) {
                         case 200:
-                            log.gravaLog(`Enviado Numero do pedido para instaleap : ${id} Pedido ${numeropedido}`)
+                            log.gravaLog(`Enviado Numero do pedido para instaleap : ${id} Pedido ${numeropedido} ${response.body}`)
+                            console.log(response.body)
                             resolve()
                             break;
                         case 403:
-                            log.gravaLog(`Erro ao Enviar Numero do pedido para instaleap : ${id} Pedido ${numeropedido}`)
+                            log.gravaLog(`Erro ao Enviar Numero do pedido para instaleap : ${id} Pedido ${numeropedido} ${response.body}`)
+                            console.log(response.body)
                             resolve()
                             break;
                         default:

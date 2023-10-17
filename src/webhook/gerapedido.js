@@ -17,10 +17,22 @@ class Gerapedido {
         return dadosUltimoPedido['pedido_num'] + 1;
     }
     async reservaNumeroPedido(jobId, unidade) {
+        var instaleapAPI;
+        switch (unidade) {
+            case 'REDE_KALIMERA':
+                instaleapAPI = new Instaleap('007')
+                break;
+            case 'MONTE_SERRAT':
+                instaleapAPI = new Instaleap('002')
+                break;
+            case 'ATACADO_CERTO':
+                instaleapAPI = new Instaleap('100')
+                break;
+        }
         console.log(jobId, 'reserva numero pedido');
         const ultimopedido = await this.getNumeroPedidoAtual()
         db.gravaPedido(data, unidade, jobId);
-        instaleap.atualizaNumeracaoPedido(jobId, ultimopedido);
+        instaleapAPI.atualizaNumeracaoPedido(jobId, ultimopedido);
         return ultimopedido;
     }
     getListaitem(numeropedido, itensvalor) {

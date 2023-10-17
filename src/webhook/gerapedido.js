@@ -41,7 +41,7 @@ class Gerapedido {
             if (itensvalor.hasOwnProperty.call(itensvalor, codigos)) {
                 const produtos = itensvalor[codigos];
                 var itemean = produtos['ean'];
-                var itemquantidade = produtos['quantidade']
+                var itemquantidade = produtos['quantidade'].toString().replace('.', '')
                 var itemvalor = parseInt(produtos['valor'].toString().replace('.', ''))
                 var itemunidade = produtos['unidade']
                 var linhaItemQuantidade = ``;

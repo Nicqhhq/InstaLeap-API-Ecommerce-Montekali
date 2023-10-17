@@ -71,13 +71,20 @@ class Gerapedido {
                 }
                 else {
                     itemquantidade * 100
-                    if (itemquantidade < 1000) {
-                        // console.log('Menor que 1000')
+                    if (itemquantidade < 10) {
+                        console.log(itemquantidade)
+                        console.log('Menor que 10')
                         linhaItemQuantidade = `00${itemquantidade}00000`
                     }
-                    else {
-                        // console.log('Maior que 1000')
+                    else if (itemquantidade < 100) {
+                        console.log(itemquantidade)
+                        console.log('Menor que 100')
                         linhaItemQuantidade = `00${itemquantidade}0000`
+                    }
+                    else if (itemquantidade < 1000) {
+                        console.log(itemquantidade)
+                        console.log('Menor que 1000')
+                        linhaItemQuantidade = `00${itemquantidade}000`
                     }
                     // console.log(`UN IT${itemean}${linhaItemQuantidade}${linhaItemValor}`)
                 }

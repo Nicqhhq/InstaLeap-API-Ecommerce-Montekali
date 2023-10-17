@@ -107,7 +107,14 @@ class WebHook {
         for (const itens in itenspedido) {
             if (itenspedido.hasOwnProperty.call(itenspedido, itens)) {
                 const produtos = itenspedido[itens];
-                itensvalor.push({ ean: produtos['attributes']['ean'], valor: produtos['attributes']['posPrice'], quantidade: produtos['found_quantity'], unidade: produtos['unit'] })
+                if (produtos['status'] == 'ADDED') {
+                    itensvalor.push({
+                        ean: produtos['attributes']['ean'],
+                        valor: (produtos['attributes']['posPrice'] * produtos['found_quantity']),
+                        quantidade: produtos['found_quantity'],
+                        unidade: produtos['unit']
+                    })
+                }
             }
         }
         const retorno = gerapedido.gravapedido(numeropedido, itensvalor);

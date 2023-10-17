@@ -110,7 +110,7 @@ class WebHook {
                 if (produtos['status'] == 'ADDED') {
                     itensvalor.push({
                         ean: produtos['attributes']['ean'],
-                        valor: (produtos['attributes']['posPrice'] * produtos['found_quantity']),
+                        valor: (produtos['attributes']['posPrice'] * produtos['found_quantity']) / Math.pow(10, 13),
                         quantidade: produtos['found_quantity'],
                         unidade: produtos['unit']
                     })

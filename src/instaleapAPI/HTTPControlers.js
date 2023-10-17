@@ -9,6 +9,7 @@ class InstaleapAPI {
     constructor(unidade) {
         this.unidade = unidade;
         this.apikeyunidade = this.apikey(unidade)
+        this.apikeyLogisticaunidade = this.apikeyLogistica(unidade)
     }
     apikey(unidade) {
         var apikeyunidade;
@@ -17,13 +18,28 @@ class InstaleapAPI {
                 apikeyunidade = api.apikeyms
                 break;
             case '007':
-                apikeyunidade = api.production_apikeykl
+                apikeyunidade = api.apikeykl
                 break;
             case '100':
-                apikeyunidade = api.production_apikeyatc
+                apikeyunidade = api.apikeycd
                 break;
         }
         return apikeyunidade;
+    }
+    apikeyLogistica(unidade) {
+        var apikeyLogisticaunidade;
+        switch (unidade) {
+            case '002':
+                apikeyLogisticaunidade = api.apiKeyMsLogistica
+                break;
+            case '007':
+                apikeyLogisticaunidade = api.apiKeyKLLogistica
+                break;
+            case '100':
+                apikeyLogisticaunidade = api.apiKeyAtcLogistica
+                break;
+        }
+        return apikeyLogisticaunidade;
     }
     async criarProduto(produtonome, produtosku, produtoembalagem, produtourlfoto, produtoean, produtomarca, fatormultiplicativo) {
         return new Promise((resolve, reject) => {
@@ -328,11 +344,11 @@ class InstaleapAPI {
         return new Promise((resolve, reject) => {
             const options = {
                 method: 'PUT',
-                url: 'https://api.xandar.instaleap.io' + `/jobs/${id}/external_data`,
+                url: api.urlLogistica + `/jobs/${id}/external_data`,
                 headers: {
                     accept: 'application/json',
                     'content-type': 'application/json',
-                    'x-api-key': 'vyRAE82ZWYejUcoJgrEQgNiD1USpFBkp1kt2bcpj',
+                    'x-api-key': this.apikeyLogisticaunidade,
                 },
                 body: {
                     external_data: {

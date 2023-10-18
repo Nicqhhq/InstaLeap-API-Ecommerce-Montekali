@@ -46,71 +46,87 @@ class Gerapedido {
                 var itemunidade = produtos['unidade']
                 var linhaItemQuantidade = ``;
                 var linhaItemValor = ``;
-                console.log(`Valor Quantidade Sem Formatar ${itemquantidade}`);
-                console.log(`Valor Preco Sem Formatar ${itemvalor}`);
-                //validacao quantidade
+                //validacao quantidade  
                 if (itemunidade == 'KG') {
-                    itemquantidade = itemquantidade * 1000
+                    console.log("Item é kg", `${produtos['ean']}`)
+                    if (itemquantidade.toString().charAt(0) == '0') {
+                        itemquantidade = itemquantidade * 100
+                        console.log(`Item quantidade apos multiplicacao por 100 ${itemquantidade}`)
+                    }
+                    else {
+                        itemquantidade = itemquantidade * 10000
+                        console.log(`Item quantidade apos multiplicacao por 1000 ${itemquantidade}`)
+                    }
+                    console.log(itemquantidade)
                     if (itemquantidade < 1000) {
-                        // console.log('Menor que 1000')
+                        console.log('Menor que 1000 valor: ', itemquantidade)
                         linhaItemQuantidade = `000${itemquantidade}00`
                     }
                     else if (itemquantidade < 10000) {
-                        // console.log('menor que 10000')
-                        linhaItemQuantidade = `00${itemquantidade}00`
+                        console.log('menor que 10000 valor : ', itemquantidade)
+                        linhaItemQuantidade = `000${itemquantidade}0`
                     }
                     else if (itemquantidade < 100000) {
-                        // console.log('menor que 100000')
+                        console.log('menor que 100000 valor: ', itemquantidade)
                         linhaItemQuantidade = `00${itemquantidade}0`
                     }
                     else if (itemquantidade < 1000000) {
-                        // console.log('menor que 1000000')
+                        console.log('menor que 1000000 valor : ', itemquantidade)
                         linhaItemQuantidade = `00${itemquantidade}`
+                        console.log(linhaItemQuantidade)
+                    }
+                    else if (itemquantidade < 10000000) {
+                        console.log('menor que 10000000 valor: ', itemquantidade)
+                        itemquantidade = itemquantidade.toString().substring(0, 6)
+                        linhaItemQuantidade = `0${itemquantidade}0`
+                        console.log(linhaItemQuantidade)
+                        console.log(itemquantidade)
                     }
                     // console.log(`KG IT${itemean}${linhaItemQuantidade}${linhaItemValor}`)
                 }
                 else {
+                    // console.log(`O item ${produtos['ean']} é UN`)
                     itemquantidade * 100
                     if (itemquantidade < 10) {
-                        console.log(itemquantidade)
-                        console.log('Menor que 10')
+                        // console.log(itemquantidade)
+                        // console.log('Menor que 10')
                         linhaItemQuantidade = `00${itemquantidade}00000`
                     }
                     else if (itemquantidade < 100) {
-                        console.log(itemquantidade)
-                        console.log('Menor que 100')
-                        linhaItemQuantidade = `00${itemquantidade}0000`
+                        // console.log(itemquantidade)
+                        // console.log('Menor que 100')
+                        linhaItemQuantidade = `0${itemquantidade}00000`
                     }
                     else if (itemquantidade < 1000) {
-                        console.log(itemquantidade)
-                        console.log('Menor que 1000')
-                        linhaItemQuantidade = `00${itemquantidade}000`
+                        // console.log(itemquantidade)
+                        // console.log('Menor que 1000')
+                        linhaItemQuantidade = `${itemquantidade}00000`
                     }
                     // console.log(`UN IT${itemean}${linhaItemQuantidade}${linhaItemValor}`)
                 }
                 // tratativa valor
                 if (itemvalor < 100) {
-                    console.log("Valor menor que 100")
+                    // console.log("Valor menor que 100")
                     linhaItemValor = `000000${itemvalor}`
                 }
                 else if (itemvalor < 1000) {
-                    console.log("Valor menor que 1000")
+                    // console.log("Valor menor que 1000")
                     linhaItemValor = `00000${itemvalor}`
                 }
                 else if (itemvalor < 10000) {
-                    console.log("Valor menor que 10000")
+                    // console.log("Valor menor que 10000")
                     linhaItemValor = `0000${itemvalor}`
                 }
                 else if (itemvalor < 100000) {
-                    console.log("Valor menor que 100000")
+                    // console.log("Valor menor que 100000")
                     linhaItemValor = `000${itemvalor}`
                 }
                 else if (itemvalor < 1000000) {
-                    console.log("Valor menor que 1000000")
+                    // console.log("Valor menor que 1000000")
                     linhaItemValor = `00${itemvalor}`
                 }
                 else if (itemvalor < 10000000) {
-                    console.log("Valor menor que 10000000")
+                    // console.log("Valor menor que 10000000")
                     linhaItemValor = `0${itemvalor}`
                 }
                 listaitem.push(`IT${itemean}${linhaItemQuantidade}${linhaItemValor}`)

@@ -41,7 +41,7 @@ class Gerapedido {
             if (itensvalor.hasOwnProperty.call(itensvalor, codigos)) {
                 const produtos = itensvalor[codigos];
                 var itemean = produtos['ean'];
-                var itemquantidade = produtos['quantidade'].toString().replace('.', '')
+                var itemquantidade = produtos['quantidade']
                 var itemvalor = parseInt(produtos['valor'].toString().replace('.', ''))
                 var itemunidade = produtos['unidade']
                 var linhaItemQuantidade = ``;
@@ -49,40 +49,66 @@ class Gerapedido {
                 //validacao quantidade  
                 if (itemunidade == 'KG') {
                     console.log("Item é kg", `${produtos['ean']}`)
-                    if (itemquantidade.toString().charAt(0) == '0') {
-                        itemquantidade = itemquantidade * 100
-                        console.log(`Item quantidade apos multiplicacao por 100 ${itemquantidade}`)
-                    }
-                    else {
-                        itemquantidade = itemquantidade * 10000
-                        console.log(`Item quantidade apos multiplicacao por 1000 ${itemquantidade}`)
-                    }
                     console.log(itemquantidade)
-                    if (itemquantidade < 1000) {
-                        console.log('Menor que 1000 valor: ', itemquantidade)
-                        linhaItemQuantidade = `000${itemquantidade}00`
+                    if (itemquantidade < 10) {
+                        itemquantidade = itemquantidade.toString().replace('.', '')
+                        console.log("Menor que 10")
+                        console.log(itemquantidade.length)
+                        if (itemquantidade.length > 3) {
+                            itemquantidade = itemquantidade.substring(0, 4)
+                            linhaItemQuantidade = `00${itemquantidade}00`
+                            console.log('Maior que 3')
+                        } if (itemquantidade.length == 3) {
+                            linhaItemQuantidade = `00${itemquantidade}000`
+                            console.log('menor ou igual que 3')
+                        } if (itemquantidade.length == 2) {
+                            linhaItemQuantidade = `00${itemquantidade}0000`
+                            console.log('menor ou igual que 2')
+                        } if (itemquantidade.length == 1) {
+                            console.log('menor ou igual que 1')
+                            linhaItemQuantidade = `00${itemquantidade}00000`
+                        }
                     }
-                    else if (itemquantidade < 10000) {
-                        console.log('menor que 10000 valor : ', itemquantidade)
-                        linhaItemQuantidade = `000${itemquantidade}0`
+                    else if (itemquantidade < 100) {
+                        itemquantidade = itemquantidade.toString().replace('.', '')
+                        console.log(itemquantidade.length)
+                        console.log("menor que 100")
+                        if (itemquantidade.length > 4) {
+                            itemquantidade = itemquantidade.substring(0, 5)
+                            linhaItemQuantidade = `0${itemquantidade}00`
+                            console.log('Maior que 4')
+                        } if (itemquantidade.length == 4) {
+                            linhaItemQuantidade = `0${itemquantidade}000`
+                            console.log('menor ou igual que 3')
+                        } if (itemquantidade.length == 3) {
+                            linhaItemQuantidade = `0${itemquantidade}0000`
+                            console.log('menor ou igual que 2')
+                        } if (itemquantidade.length == 2) {
+                            console.log('menor ou igual que 1')
+                            linhaItemQuantidade = `0${itemquantidade}00000`
+                        }
                     }
-                    else if (itemquantidade < 100000) {
-                        console.log('menor que 100000 valor: ', itemquantidade)
-                        linhaItemQuantidade = `00${itemquantidade}0`
+                    else if (itemquantidade < 1000) {
+                        itemquantidade = itemquantidade.toString().replace('.', '')
+                        console.log("Menor que 1000")
+                        console.log(itemquantidade.length)
+                        console.log("menor que 100")
+                        if (itemquantidade.length > 5) {
+                            itemquantidade = itemquantidade.substring(0, 6)
+                            linhaItemQuantidade = `${itemquantidade}00`
+                            console.log('Maior que 4')
+                        } if (itemquantidade.length == 5) {
+                            linhaItemQuantidade = `${itemquantidade}000`
+                            console.log('menor ou igual que 3')
+                        } if (itemquantidade.length == 4) {
+                            linhaItemQuantidade = `${itemquantidade}0000`
+                            console.log('menor ou igual que 2')
+                        } if (itemquantidade.length == 3) {
+                            console.log('menor ou igual que 1')
+                            linhaItemQuantidade = `${itemquantidade}00000`
+                        }
+
                     }
-                    else if (itemquantidade < 1000000) {
-                        console.log('menor que 1000000 valor : ', itemquantidade)
-                        linhaItemQuantidade = `00${itemquantidade}`
-                        console.log(linhaItemQuantidade)
-                    }
-                    else if (itemquantidade < 10000000) {
-                        console.log('menor que 10000000 valor: ', itemquantidade)
-                        itemquantidade = itemquantidade.toString().substring(0, 6)
-                        linhaItemQuantidade = `0${itemquantidade}0`
-                        console.log(linhaItemQuantidade)
-                        console.log(itemquantidade)
-                    }
-                    // console.log(`KG IT${itemean}${linhaItemQuantidade}${linhaItemValor}`)
                 }
                 else {
                     // console.log(`O item ${produtos['ean']} é UN`)

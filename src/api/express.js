@@ -1,10 +1,11 @@
 const api = require('express');
 const cors = require('cors')
-
+const path = require('path')
+require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') })
 class Express {
     constructor() {
         this.app = api();
-        this.port = 3000;
+        this.port = process.env.PORTASERVER;
         this.middleware()
         this.routes()
     }

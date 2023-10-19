@@ -4,13 +4,23 @@ const arquivopedido = path.join(__dirname, '..', '..', 'pedidos/');
 const Instaleap = require(path.join(__dirname, '..', 'instaleapAPI', 'HTTPControlers.js'));
 const localdatabase = require(path.join(__dirname, '..', '..', 'database', 'localdatabase', 'controllerdatabase', 'initdatabase.js'));
 const Timer = require(path.join(__dirname, '..', 'configlogs', 'time.js'));
+const urlRP = require(path.join(__dirname, '..', 'rpinfoAPI', 'url.js'))
 const timer = new Timer();
 const data = timer.get_data_atual();
 const db = new localdatabase()
 const instaleap = new Instaleap()
+const SambaClient = require('samba-client');
 console.log()
 class Gerapedido {
     constructor() {
+        this.client = new SambaClient({
+            address: urlRP.servidorDavEndereco, // required
+            username: urlRP.servidorDavUsuario, // not required, defaults to guest
+            password: urlRP.servidorDavSenha, // not required
+            domain: urlRP.servidorDavDominio, // not required
+            maxProtocol: 'SMB3', // not required
+            maskCmd: true, // not required, defaults to false
+        });
     }
     async getNumeroPedidoAtual() {
         const dadosUltimoPedido = await db.retornaUltimoPedido()
@@ -45,19 +55,11 @@ class Gerapedido {
                 var itemvalor = (produtos['valor'])
                 var itemunidade = produtos['unidade']
                 function gerarLinhaItem(ean, quantidade, preco) {
-                    // Arredonda a quantidade para 4 casas decimais e o preço para 2 casas decimais
                     quantidade = parseFloat(quantidade.toFixed(4));
                     preco = parseFloat(preco.toFixed(2));
-
-                    // Converte a quantidade para o formato desejado
                     quantidade = (quantidade * 10000).toFixed(0).toString().padStart(7, '0');
-
-                    // Converte o preço para o formato desejado
                     preco = (preco * 100).toFixed(0).toString().padStart(8, '0');
-
-                    // Formata a linha item
                     const linhaItem = `IT${ean}${quantidade}${preco}`;
-
                     return linhaItem;
                 }
                 listaitem.push(gerarLinhaItem(itemean, itemquantidade, itemvalor))
@@ -65,7 +67,7 @@ class Gerapedido {
         }
         return [listaitem, numeropedido];
     }
-    gravapedido(numeropedido, itensvalor) {
+    async gravapedido(numeropedido, itensvalor) {
         fs.appendFileSync(`${arquivopedido}VD${numeropedido}.txt`, `CL000000\n`,)
         var listaitem = this.getListaitem(numeropedido, itensvalor);
         for (const itens in listaitem[0]) {
@@ -76,6 +78,7 @@ class Gerapedido {
         }
         fs.appendFileSync(`${arquivopedido}VD${numeropedido}.txt`, `AC000\n`,),
             console.log(`Pedido Gravado numero: ${numeropedido}`)
+        await this.client.sendFile(`${arquivopedido}VD${numeropedido}.txt`, `/VD${numeropedido}.txt`).then((_) => { console.log(_) }).catch((_) => { console.log(_) })
         return numeropedido;
 
     }
@@ -83,84 +86,3 @@ class Gerapedido {
 
 module.exports = Gerapedido;
 
-
-// if (itemunidade == 'KG') {
-//     if (itemquantidade < 10) {
-//         itemquantidade = itemquantidade.toString().replace('.', '')
-//         // console.log("Menor que 10")
-//         // console.log(itemquantidade.length)
-//         if (itemquantidade.length > 3) {
-//             itemquantidade = itemquantidade.substring(0, 4)
-//             linhaItemQuantidade = `00${itemquantidade}00`
-//             // console.log('Maior que 3')
-//         } if (itemquantidade.length == 3) {
-//             linhaItemQuantidade = `00${itemquantidade}000`
-//             // console.log('menor ou igual que 3')
-//         } if (itemquantidade.length == 2) {
-//             linhaItemQuantidade = `00${itemquantidade}0000`
-//             // console.log('menor ou igual que 2')
-//         } if (itemquantidade.length == 1) {
-//             // console.log('menor ou igual que 1')
-//             linhaItemQuantidade = `00${itemquantidade}00000`
-//         }
-//     }
-//     else if (itemquantidade < 100) {
-//         itemquantidade = itemquantidade.toString().replace('.', '')
-//         // console.log(itemquantidade.length)
-//         // console.log("menor que 100")
-//         if (itemquantidade.length > 4) {
-//             itemquantidade = itemquantidade.substring(0, 5)
-//             linhaItemQuantidade = `0${itemquantidade}00`
-//             // console.log('Maior que 4')
-//         } if (itemquantidade.length == 4) {
-//             linhaItemQuantidade = `0${itemquantidade}000`
-//             // console.log('menor ou igual que 3')
-//         } if (itemquantidade.length == 3) {
-//             linhaItemQuantidade = `0${itemquantidade}0000`
-//             // console.log('menor ou igual que 2')
-//         } if (itemquantidade.length == 2) {
-//             // console.log('menor ou igual que 1')
-//             linhaItemQuantidade = `0${itemquantidade}00000`
-//         }
-//     }
-//     else if (itemquantidade < 1000) {
-//         itemquantidade = itemquantidade.toString().replace('.', '')
-//         // console.log("Menor que 1000")
-//         // console.log(itemquantidade.length)
-//         // console.log("menor que 100")
-//         if (itemquantidade.length > 5) {
-//             itemquantidade = itemquantidade.substring(0, 6)
-//             linhaItemQuantidade = `${itemquantidade}00`
-//             // console.log('Maior que 4')
-//         } if (itemquantidade.length == 5) {
-//             linhaItemQuantidade = `${itemquantidade}000`
-//             // console.log('menor ou igual que 3')
-//         } if (itemquantidade.length == 4) {
-//             linhaItemQuantidade = `${itemquantidade}0000`
-//             // console.log('menor ou igual que 2')
-//         } if (itemquantidade.length == 3) {
-//             // console.log('menor ou igual que 1')
-//             linhaItemQuantidade = `${itemquantidade}00000`
-//         }
-
-//     }
-// }
-// else {
-//     // console.log(`O item ${produtos['ean']} é UN`)
-//     itemquantidade * 100
-//     if (itemquantidade < 10) {
-//         // console.log(itemquantidade)
-//         // console.log('Menor que 10')
-//         linhaItemQuantidade = `00${itemquantidade}00000`
-//     }
-//     else if (itemquantidade < 100) {
-//         // console.log(itemquantidade)
-//         // console.log('Menor que 100')
-//         linhaItemQuantidade = `0${itemquantidade}00000`
-//     }
-//     else if (itemquantidade < 1000) {
-//         // console.log(itemquantidade)
-//         // console.log('Menor que 1000')
-//         linhaItemQuantidade = `${itemquantidade}00000`
-//     }
-// }

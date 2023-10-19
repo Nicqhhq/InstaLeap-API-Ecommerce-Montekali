@@ -108,11 +108,12 @@ class WebHook {
             if (itenspedido.hasOwnProperty.call(itenspedido, itens)) {
                 const produtos = itenspedido[itens];
                 if (produtos['status'] == 'ADDED') {
+                    console.log(produtos['attributes']['posPrice'].toString().replace('.', ''));
                     // console.log(produtos['found_quantity'],)
                     // console.log((produtos['attributes']['posPrice'] * produtos['found_quantity']).toFixed(2).toString().replace('.', ''))
                     itensvalor.push({
                         ean: produtos['attributes']['ean'],
-                        valor: (produtos['attributes']['posPrice']),
+                        valor: produtos['attributes']['posPrice'],
                         quantidade: produtos['found_quantity'],
                         unidade: produtos['unit']
                     })

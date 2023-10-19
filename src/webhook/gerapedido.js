@@ -42,120 +42,25 @@ class Gerapedido {
                 const produtos = itensvalor[codigos];
                 var itemean = produtos['ean'];
                 var itemquantidade = produtos['quantidade']
-                var itemvalor = parseInt(produtos['valor'].toString().replace('.', ''))
+                var itemvalor = (produtos['valor'])
                 var itemunidade = produtos['unidade']
-                var linhaItemQuantidade = ``;
-                var linhaItemValor = ``;
-                //validacao quantidade  
-                if (itemunidade == 'KG') {
-                    console.log("Item é kg", `${produtos['ean']}`)
-                    console.log(itemquantidade)
-                    if (itemquantidade < 10) {
-                        itemquantidade = itemquantidade.toString().replace('.', '')
-                        console.log("Menor que 10")
-                        console.log(itemquantidade.length)
-                        if (itemquantidade.length > 3) {
-                            itemquantidade = itemquantidade.substring(0, 4)
-                            linhaItemQuantidade = `00${itemquantidade}00`
-                            console.log('Maior que 3')
-                        } if (itemquantidade.length == 3) {
-                            linhaItemQuantidade = `00${itemquantidade}000`
-                            console.log('menor ou igual que 3')
-                        } if (itemquantidade.length == 2) {
-                            linhaItemQuantidade = `00${itemquantidade}0000`
-                            console.log('menor ou igual que 2')
-                        } if (itemquantidade.length == 1) {
-                            console.log('menor ou igual que 1')
-                            linhaItemQuantidade = `00${itemquantidade}00000`
-                        }
-                    }
-                    else if (itemquantidade < 100) {
-                        itemquantidade = itemquantidade.toString().replace('.', '')
-                        console.log(itemquantidade.length)
-                        console.log("menor que 100")
-                        if (itemquantidade.length > 4) {
-                            itemquantidade = itemquantidade.substring(0, 5)
-                            linhaItemQuantidade = `0${itemquantidade}00`
-                            console.log('Maior que 4')
-                        } if (itemquantidade.length == 4) {
-                            linhaItemQuantidade = `0${itemquantidade}000`
-                            console.log('menor ou igual que 3')
-                        } if (itemquantidade.length == 3) {
-                            linhaItemQuantidade = `0${itemquantidade}0000`
-                            console.log('menor ou igual que 2')
-                        } if (itemquantidade.length == 2) {
-                            console.log('menor ou igual que 1')
-                            linhaItemQuantidade = `0${itemquantidade}00000`
-                        }
-                    }
-                    else if (itemquantidade < 1000) {
-                        itemquantidade = itemquantidade.toString().replace('.', '')
-                        console.log("Menor que 1000")
-                        console.log(itemquantidade.length)
-                        console.log("menor que 100")
-                        if (itemquantidade.length > 5) {
-                            itemquantidade = itemquantidade.substring(0, 6)
-                            linhaItemQuantidade = `${itemquantidade}00`
-                            console.log('Maior que 4')
-                        } if (itemquantidade.length == 5) {
-                            linhaItemQuantidade = `${itemquantidade}000`
-                            console.log('menor ou igual que 3')
-                        } if (itemquantidade.length == 4) {
-                            linhaItemQuantidade = `${itemquantidade}0000`
-                            console.log('menor ou igual que 2')
-                        } if (itemquantidade.length == 3) {
-                            console.log('menor ou igual que 1')
-                            linhaItemQuantidade = `${itemquantidade}00000`
-                        }
+                function gerarLinhaItem(ean, quantidade, preco) {
+                    // Arredonda a quantidade para 4 casas decimais e o preço para 2 casas decimais
+                    quantidade = parseFloat(quantidade.toFixed(4));
+                    preco = parseFloat(preco.toFixed(2));
 
-                    }
+                    // Converte a quantidade para o formato desejado
+                    quantidade = (quantidade * 10000).toFixed(0).toString().padStart(7, '0');
+
+                    // Converte o preço para o formato desejado
+                    preco = (preco * 100).toFixed(0).toString().padStart(8, '0');
+
+                    // Formata a linha item
+                    const linhaItem = `IT${ean}${quantidade}${preco}`;
+
+                    return linhaItem;
                 }
-                else {
-                    // console.log(`O item ${produtos['ean']} é UN`)
-                    itemquantidade * 100
-                    if (itemquantidade < 10) {
-                        // console.log(itemquantidade)
-                        // console.log('Menor que 10')
-                        linhaItemQuantidade = `00${itemquantidade}00000`
-                    }
-                    else if (itemquantidade < 100) {
-                        // console.log(itemquantidade)
-                        // console.log('Menor que 100')
-                        linhaItemQuantidade = `0${itemquantidade}00000`
-                    }
-                    else if (itemquantidade < 1000) {
-                        // console.log(itemquantidade)
-                        // console.log('Menor que 1000')
-                        linhaItemQuantidade = `${itemquantidade}00000`
-                    }
-                    // console.log(`UN IT${itemean}${linhaItemQuantidade}${linhaItemValor}`)
-                }
-                // tratativa valor
-                if (itemvalor < 100) {
-                    // console.log("Valor menor que 100")
-                    linhaItemValor = `000000${itemvalor}`
-                }
-                else if (itemvalor < 1000) {
-                    // console.log("Valor menor que 1000")
-                    linhaItemValor = `00000${itemvalor}`
-                }
-                else if (itemvalor < 10000) {
-                    // console.log("Valor menor que 10000")
-                    linhaItemValor = `0000${itemvalor}`
-                }
-                else if (itemvalor < 100000) {
-                    // console.log("Valor menor que 100000")
-                    linhaItemValor = `000${itemvalor}`
-                }
-                else if (itemvalor < 1000000) {
-                    // console.log("Valor menor que 1000000")
-                    linhaItemValor = `00${itemvalor}`
-                }
-                else if (itemvalor < 10000000) {
-                    // console.log("Valor menor que 10000000")
-                    linhaItemValor = `0${itemvalor}`
-                }
-                listaitem.push(`IT${itemean}${linhaItemQuantidade}${linhaItemValor}`)
+                listaitem.push(gerarLinhaItem(itemean, itemquantidade, itemvalor))
             }
         }
         return [listaitem, numeropedido];
@@ -178,3 +83,84 @@ class Gerapedido {
 
 module.exports = Gerapedido;
 
+
+// if (itemunidade == 'KG') {
+//     if (itemquantidade < 10) {
+//         itemquantidade = itemquantidade.toString().replace('.', '')
+//         // console.log("Menor que 10")
+//         // console.log(itemquantidade.length)
+//         if (itemquantidade.length > 3) {
+//             itemquantidade = itemquantidade.substring(0, 4)
+//             linhaItemQuantidade = `00${itemquantidade}00`
+//             // console.log('Maior que 3')
+//         } if (itemquantidade.length == 3) {
+//             linhaItemQuantidade = `00${itemquantidade}000`
+//             // console.log('menor ou igual que 3')
+//         } if (itemquantidade.length == 2) {
+//             linhaItemQuantidade = `00${itemquantidade}0000`
+//             // console.log('menor ou igual que 2')
+//         } if (itemquantidade.length == 1) {
+//             // console.log('menor ou igual que 1')
+//             linhaItemQuantidade = `00${itemquantidade}00000`
+//         }
+//     }
+//     else if (itemquantidade < 100) {
+//         itemquantidade = itemquantidade.toString().replace('.', '')
+//         // console.log(itemquantidade.length)
+//         // console.log("menor que 100")
+//         if (itemquantidade.length > 4) {
+//             itemquantidade = itemquantidade.substring(0, 5)
+//             linhaItemQuantidade = `0${itemquantidade}00`
+//             // console.log('Maior que 4')
+//         } if (itemquantidade.length == 4) {
+//             linhaItemQuantidade = `0${itemquantidade}000`
+//             // console.log('menor ou igual que 3')
+//         } if (itemquantidade.length == 3) {
+//             linhaItemQuantidade = `0${itemquantidade}0000`
+//             // console.log('menor ou igual que 2')
+//         } if (itemquantidade.length == 2) {
+//             // console.log('menor ou igual que 1')
+//             linhaItemQuantidade = `0${itemquantidade}00000`
+//         }
+//     }
+//     else if (itemquantidade < 1000) {
+//         itemquantidade = itemquantidade.toString().replace('.', '')
+//         // console.log("Menor que 1000")
+//         // console.log(itemquantidade.length)
+//         // console.log("menor que 100")
+//         if (itemquantidade.length > 5) {
+//             itemquantidade = itemquantidade.substring(0, 6)
+//             linhaItemQuantidade = `${itemquantidade}00`
+//             // console.log('Maior que 4')
+//         } if (itemquantidade.length == 5) {
+//             linhaItemQuantidade = `${itemquantidade}000`
+//             // console.log('menor ou igual que 3')
+//         } if (itemquantidade.length == 4) {
+//             linhaItemQuantidade = `${itemquantidade}0000`
+//             // console.log('menor ou igual que 2')
+//         } if (itemquantidade.length == 3) {
+//             // console.log('menor ou igual que 1')
+//             linhaItemQuantidade = `${itemquantidade}00000`
+//         }
+
+//     }
+// }
+// else {
+//     // console.log(`O item ${produtos['ean']} é UN`)
+//     itemquantidade * 100
+//     if (itemquantidade < 10) {
+//         // console.log(itemquantidade)
+//         // console.log('Menor que 10')
+//         linhaItemQuantidade = `00${itemquantidade}00000`
+//     }
+//     else if (itemquantidade < 100) {
+//         // console.log(itemquantidade)
+//         // console.log('Menor que 100')
+//         linhaItemQuantidade = `0${itemquantidade}00000`
+//     }
+//     else if (itemquantidade < 1000) {
+//         // console.log(itemquantidade)
+//         // console.log('Menor que 1000')
+//         linhaItemQuantidade = `${itemquantidade}00000`
+//     }
+// }

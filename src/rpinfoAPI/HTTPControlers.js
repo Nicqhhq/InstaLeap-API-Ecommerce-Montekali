@@ -1,5 +1,5 @@
 const path = require('path');
-const api = require(path.join(__dirname, 'URL.js'));
+const api = require(path.join(__dirname, 'url.js'));
 const log = require(path.join(__dirname, '..', 'configlogs', 'gravalog.js'));
 const request = require('request');
 class RpInfo {

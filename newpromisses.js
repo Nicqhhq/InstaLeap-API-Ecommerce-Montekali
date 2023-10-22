@@ -1,8 +1,10 @@
 const path = require('path');
 const Sender = require(path.join(__dirname, 'src', 'instaleapAPI', 'sender.js'));
 const Server = require(path.join(__dirname, 'src', 'api', 'express.js'));
+const Tempo = require(path.join(__dirname, 'src', 'configlogs', 'time.js'));
 const Migrations = require(path.join(__dirname, 'database', 'migrations.js'));
 const { DateTime, Interval } = require("luxon");
+
 var primeiraabertura = true;
 class Promisses {
     constructor(unidade, primeiraabertura) {
@@ -12,6 +14,7 @@ class Promisses {
         this.sender = new Sender(this.unidade)
     }
     async inicializacao() {
+        const tempo = new Tempo();
         const migrations = new Migrations(this.unidade)
         var controladortempo = {}
         const dados = await migrations.getHorariosMargem();
@@ -56,12 +59,12 @@ class Promisses {
                         if (horarioinicio <= now && now <= horariofim) {
                             funcoesParaExecutar.push(funcao);
                         } else {
-                            console.log(`Fora de horário ${funcao}`);
+                            console.log(`${tempo.get_hora_atual()} - Unidade ${this.unidade} Fora de horário ${funcao}`);
                         }
                     }
                 }
                 if (funcoesParaExecutar.length > 0) {
-                    console.log(`Dentro do tempo ${funcoesParaExecutar.join(', ')}`);
+                    console.log(`${tempo.get_hora_atual()} - Unidade ${this.unidade} Dentro do tempo Unidade ${funcoesParaExecutar.join(', ')}`);
                     const executePromisesSequentially = async () => {
                         for (const funcaoExecutar of funcoesParaExecutar) {
                             await this.sender[funcaoExecutar]();
@@ -69,19 +72,19 @@ class Promisses {
                     };
 
                     executePromisesSequentially().then(() => {
-                        console.log('Todas as funções foram executadas sequencialmente.');
+                        console.log(`${tempo.get_hora_atual()} - Todas as funções foram executadas sequencialmente.`);
                         resolve();
                     }).catch(error => {
-                        console.error('Ocorreu um erro durante a execução sequencial das funções:', error);
+                        console.error(`${tempo.get_hora_atual()} - Ocorreu um erro durante a execução sequencial das funções:`, error);
                         reject();
                     });
                 }
                 else {
-                    console.log('Nenhuma funcao para rodar')
+                    console.log(`${tempo.get_hora_atual()} - Nenhuma funcao para rodar`)
                     resolve();
                 }
             } else {
-                console.log(`Código Raiz '${this.unidade}' não encontrado.`);
+                console.log(`${tempo.get_hora_atual()} - Código Raiz '${this.unidade}' não encontrado.`);
                 reject(`Código Raiz '${this.unidade}' não encontrado.`);
             }
         })
@@ -95,9 +98,10 @@ const atacadocerto = new Promisses('100');
 const server = new Server()
 server.start();
 async function iniciar() {
+    const tempo = new Tempo();
     if (primeiraabertura == true) {
         // await monteserrat.inicializacao().then(() => console.log("Finalizada Monte Serrat"));
-        await kalimera.inicializacao().then(() => console.log("Finalizada Kalimera"));
+        await kalimera.inicializacao().then(() => console.log(`${tempo.get_hora_atual()} - Finalizada Kalimera`));
         // await atacadocerto.inicializacao().then(() => console.log("Finalizada Atacado certo"));
         primeiraabertura = false;
         iniciar();
@@ -105,7 +109,7 @@ async function iniciar() {
     else {
         setInterval(async () => {
             // await monteserrat.inicializacao().then(() => console.log("Finalizada Monte Serrat"));
-            await kalimera.inicializacao().then(() => console.log("Finalizada Kalimera"));
+            await kalimera.inicializacao().then(() => console.log(`${tempo.get_hora_atual()} - Finalizada Kalimera`));
         }, 1800000);
         setInterval(async () => {
             // await atacadocerto.inicializacao().then(() => console.log("Finalizada Atacado certo"));

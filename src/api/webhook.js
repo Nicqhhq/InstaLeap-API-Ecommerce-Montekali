@@ -120,7 +120,7 @@ class WebHook {
                 }
             }
         }
-        const retorno = gerapedido.gravapedido(numeropedido, itensvalor);
+        const retorno = gerapedido.gravapedido(numeropedido.toString().padStart(6, '0'), itensvalor);
         log.gravaLog(`WebHook: PickingFinished Pedido Gravado ERP numero : ${retorno}`)
         res.json({
             'AVISO': 'PICKING_FINISHED ACEITO',
